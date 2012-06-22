@@ -1,0 +1,12 @@
+{
+	"author": "Benjamin Horsleben <benjamin@fizkerinc.dk>",
+	"name": "date-picker",
+	"description": "A simple client-side date-picker",
+	"version": "0.0.0",
+	"dependencies": {},
+	"devDependencies": {},
+	"optionalDependencies": {},
+	"engines": {
+		"node": "*"
+	}
+}
