@@ -1,15 +1,19 @@
-{
-	"author": "Benjamin Horsleben <benjamin@fizkerinc.dk>",
-	"name": "date-picker",
-	"description": "A simple client-side date-picker",
-	"version": "0.0.1",
-	"dependencies":
-		{ "express": "2.5.10"
-		, "hogan.js": "2.0.0"
-		}
-	, "devDependencies": {},
-	"optionalDependencies": {},
-	"engines": {
-		"node": "*"
+{ "author": "Benjamin Horsleben <benjamin@fizkerinc.dk>"
+, "name": "date-picker"
+, "description": "A simple client-side date-picker"
+, "version": "0.0.1"
+, "dependencies":
+	{ "express": "2.5.10"
+	, "hogan.js": "2.0.0"
+	}
+, "devDependencies":
+	{ "mocha": "1.2.0"
+	, "chai": "1.0.4"
+	, "sinon": "1.3.4"
+	, "sinon-chai": "2.1.2"
+	}
+, "optionalDependencies": {}
+, "engines":
+	{ "node": "*"
 	}
 }
