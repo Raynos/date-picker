@@ -7,6 +7,36 @@ describe('unit/dp.spec.js', function() {
 		require('../../src/dp')
 		dp = global.DatePicker;
 	});
+
+	describe('When calling getCurrentMonth() with january 11th', function() {
+		var result
+		  , opts
+		beforeEach(function() {
+			var date = new Date('2012-01-11T12:00:00Z')
+			result = dp.getCurrentMonth(date, opts);
+		});
+		it('should return all days in the month', function() {
+			expect(result.length).to.equal(31);
+		});
+		it('should mark the exact date as the current', function() {
+			// current is 10 because date (11) - 1 (to get index from 0)
+			expect(result[10]).to.have.property('current').and.to.be.ok;
+		});
+		it('should have no other current date', function() {
+			// current is 10 because date (11) - 1 (to get index from 0)
+			delete result[10];
+			expect(result.some(function(date) { return date.current }))
+				.not.to.be.ok;
+		});
+		it('should format the dates properly', function() {
+			expect(result[2]).to.approximate(
+				{ date: '03'
+				, fullDate: '2012/01/03'
+				}
+			);
+		});
+	});
+
 	describe('When calling getOverflowNext() with weeks starting on wednesday', function() {
 		var result
 		  , opts

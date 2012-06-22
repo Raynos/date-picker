@@ -9,6 +9,7 @@
 		, render: render
 		};
 
+	ctor.getCurrentMonth = getCurrentMonth;
 	ctor.getOverflowNext = getOverflowNext;
 	ctor.getOverflowPrev = getOverflowPrev;
 
@@ -30,6 +31,27 @@
 		return frag;
 	};
 
+	function getCurrentMonth(now, opts) {
+		var year = now.getFullYear()
+		  , month = padDate(now.getMonth() + 1)
+		  , day = now.getDate()
+		  // we do not need to subtract one here, since that has already been done
+		  , lastDay = new Date(year, +month, 0).getDate()
+		  , days = []
+		  , i
+
+		for(i = 1; i <= lastDay; i++) {
+			var date = padDate(i)
+			days.push(
+				{ date: date
+				, fullDate: year + '/' + month + '/' + date
+				, current: day === i
+				}
+			);
+		}
+
+		return days;
+	};
 	function getOverflowPrev(now, opts) {
 		var firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 		if(firstDayOfMonth.getDay() == opts.weekStart) {
