@@ -9,6 +9,7 @@
 		, render: render
 		};
 
+	ctor.getOverflowNext = getOverflowNext;
 	ctor.getOverflowPrev = getOverflowPrev;
 
 	function ctor(container) {
@@ -31,19 +32,19 @@
 
 	function getOverflowPrev(now, opts) {
 		var firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-		if(firstDayOfMonth.getDay() == opts.firstDay) {
+		if(firstDayOfMonth.getDay() == opts.weekStart) {
 			return [];
 		}
 
 		var previousMonth = new Date(now.getFullYear(), now.getMonth(), 0)
 		  , year = previousMonth.getFullYear()
-		  , month = previousMonth.getMonth()
+		  , month = padDate(previousMonth.getMonth() + 1)
 		  , lastDate = previousMonth.getDate()
 
 		  , currentDay = firstDayOfMonth.getDay()
 		  , results = []
 		  , i
-		  , l = currentDay - opts.firstDay
+		  , l = currentDay - opts.weekStart
 
 		if(l < 0) l += 7;
 
@@ -51,11 +52,39 @@
 			var currentDate = (lastDate - l + i + 1).toString()
 			results.push(
 				{ date: currentDate
-				, fullDate: year + '/' + padDate(month +1) + '/' + currentDate
+				, fullDate: year + '/' + month + '/' + currentDate
 				}
 			);
 		}
 		return results;
+	};
+	function getOverflowNext(now, opts) {
+		var firstDayOfNextMonth = new Date(now.getFullYear(), now.getMonth()+1, 1)
+		if(firstDayOfNextMonth.getDay() == opts.weekStart) {
+			return [];
+		}
+
+		var year = firstDayOfNextMonth.getFullYear()
+		  , month = padDate(firstDayOfNextMonth.getMonth() +1)
+
+		  , result = []
+		  , i = firstDayOfNextMonth.getDay() - opts.weekStart
+		  , l = 7
+
+		if(i < 0) {
+			i += 7
+		}
+
+		for(; i < l; i++) {
+			var date = padDate(i)
+			result.push(
+				{ date: date
+				, fullDate: year + '/' + month + '/' + date
+				}
+			);
+		}
+
+		return result;
 	};
 	function padDate(date) {
 		date = +date;
