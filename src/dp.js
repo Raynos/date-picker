@@ -1,7 +1,7 @@
 !function() {
 	var template = Hogan.compile($('template').innerHTML)
 
-	global.DatePicker = ctor;
+	this.DatePicker = ctor;
 
 	ctor.prototype =
 		{ show: show
@@ -16,21 +16,37 @@
 	function ctor(container) {
 		this.container = container;
 		this.options =
-			{ firstDay: 1 // 1 == monday
+			{ weekStart: 1 // 1 == monday
 			, weekdays: [ 'sun', 'mon', 'tues', 'wed', 'thurs', 'fri', 'sat' ]
 			};
 	};
 	function render() {
 		var frag
+		  , now = new Date()
 		  , opts =
 		    { showControls: true
-		    , weekdays: [ 'mon', 'tues', 'wed', 'thurs', 'fri', 'sat', 'sun' ]
+		    , weekdays: getWeekdays(this.options)
+		    , 'prev-month': getOverflowPrev(now, this.options)
+		    , 'next-month': getOverflowNext(now, this.options)
+		    , 'cur-month': getCurrentMonth(now)
 		    }
 
 		frag = cfrag(template.render(opts));
 		return frag;
 	};
 
+	function getWeekdays(opts) {
+		var days = []
+		  , i
+		  , current = opts.weekStart
+
+		for(i = 0; i < 7; i++) {
+			days[i] = opts.weekdays[current++];
+			if(current == 7) current = 0;
+		};
+
+		return days;
+	};
 	function getCurrentMonth(now, opts) {
 		var year = now.getFullYear()
 		  , month = padDate(now.getMonth() + 1)
@@ -92,13 +108,14 @@
 		  , result = []
 		  , i = firstDayOfNextMonth.getDay() - opts.weekStart
 		  , l = 7
+		  , current = 1
 
 		if(i < 0) {
 			i += 7
 		}
 
 		for(; i < l; i++) {
-			var date = padDate(i)
+			var date = padDate(current++)
 			result.push(
 				{ date: date
 				, fullDate: year + '/' + month + '/' + date

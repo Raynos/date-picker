@@ -52,6 +52,26 @@ describe('unit/dp.spec.js', function() {
 			it('should return three days', function() {
 				expect(result.length).to.equal(5);
 			});
+			it('should date the days properly', function() {
+				expect(result).to.approximate(
+					[ { date: '01'
+					  , fullDate: '2012/06/01'
+					  }
+					, { date: '02'
+					  , fullDate: '2012/06/02'
+					  }
+					, { date: '03'
+					  , fullDate: '2012/06/03'
+					  }
+					, { date: '04'
+					  , fullDate: '2012/06/04'
+					  }
+					, { date: '05'
+					  , fullDate: '2012/06/05'
+					  }
+					]
+				);
+			});
 		});
 		describe('and the last day is a saturday', function() {
 			beforeEach(function() {
@@ -60,6 +80,20 @@ describe('unit/dp.spec.js', function() {
 			});
 			it('should return three days', function() {
 				expect(result.length).to.equal(3);
+			});
+			it('should date the days properly', function() {
+				expect(result).to.approximate(
+					[ { date: '01'
+					  , fullDate: '2012/04/01'
+					  }
+					, { date: '02'
+					  , fullDate: '2012/04/02'
+					  }
+					, { date: '03'
+					  , fullDate: '2012/04/03'
+					  }
+					]
+				);
 			});
 		});
 		describe('and the last day is a wednesday', function() {
