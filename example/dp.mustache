@@ -1,0 +1,21 @@
+	<header>
+	{{#showControls}}
+	<button>Previous month</button>
+	{{/showControls}}
+	{{#weekdays}}
+	<span class="cell-date-header">{{.}}</span>
+	{{/weekdays}}
+	{{#showControls}}
+	<button>Next month</button>
+	{{/showControls}}
+	</header>
+
+	{{#prev-month}}
+	<span class="cell-date prev-month" data-date={{fullDate}}>{{date}}</span>
+	{{/prev-month}}
+	{{#cur}}
+	<span class="cell-date" data-date={{fullDate}}>{{date}}</span>
+	{{/cur}}
+	{{#next-month}}
+	<span class="cell-date next-month" data-date={{fullDate}}>{{date}}</span>
+	{{/next-month}}

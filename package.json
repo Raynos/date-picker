@@ -2,9 +2,12 @@
 	"author": "Benjamin Horsleben <benjamin@fizkerinc.dk>",
 	"name": "date-picker",
 	"description": "A simple client-side date-picker",
-	"version": "0.0.0",
-	"dependencies": {},
-	"devDependencies": {},
+	"version": "0.0.1",
+	"dependencies":
+		{ "express": "2.5.10"
+		, "hogan.js": "2.0.0"
+		}
+	, "devDependencies": {},
 	"optionalDependencies": {},
 	"engines": {
 		"node": "*"
