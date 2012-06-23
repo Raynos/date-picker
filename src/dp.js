@@ -7,6 +7,9 @@
 		{ show: show
 		, resolveSelector: resolveSelector
 		, render: render
+		, nextMonth: nextMonth
+		, prevMonth: prevMonth
+		, dateCellClicked: dateCellClicked
 		};
 
 	ctor.getCurrentMonth = getCurrentMonth;
@@ -17,21 +20,59 @@
 		this.container = container;
 		this.options =
 			{ weekStart: 1 // 1 == monday
-			, weekdays: [ 'sun', 'mon', 'tues', 'wed', 'thurs', 'fri', 'sat' ]
+			, weekdays: [ 'su', 'mo', 'tu', 'we', 'th', 'fr', 'sa' ]
+			, months: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
+			, date: new Date()
 			};
+
+		[ 'nextMonth'
+		, 'prevMonth'
+		, 'dateCellClicked'
+		]
+			.forEach(function(func) {
+				this[func] = this[func].bind(this);
+			}, this)
 	};
+
+	function dateCellClicked(event) {
+		var elm = event.target
+		  , date = elm.dataset.date
+
+		if(!date) {
+			return;
+		}
+
+		date = date.split('/');
+
+		this.options.date.setFullYear(date[0]);
+		this.options.date.setMonth(date[1]-1);
+		this.options.date.setDate(date[2]);
+		this.show();
+	};
+	function nextMonth() {
+		this.options.date.setMonth(this.options.date.getMonth() + 1);
+		this.show();
+	};
+	function prevMonth() {
+		this.options.date.setMonth(this.options.date.getMonth() - 1);
+		this.show();
+	};
+
 	function render() {
 		var frag
-		  , now = new Date()
+		  , now = this.options.date
 		  , opts =
-		    { showControls: true
-		    , weekdays: getWeekdays(this.options)
+		    { weekdays: getWeekdays(this.options)
 		    , 'prev-month': getOverflowPrev(now, this.options)
 		    , 'next-month': getOverflowNext(now, this.options)
 		    , 'cur-month': getCurrentMonth(now)
+		    , 'current': this.options.months[now.getMonth()] + ' ' + now.getFullYear()
 		    }
 
 		frag = cfrag(template.render(opts));
+		$$('.fzk-dp-btn-nxt', frag)[0].onclick = this.nextMonth;
+		$$('.fzk-dp-btn-prv', frag)[0].onclick = this.prevMonth;
+		$$('.fzk-dp-cells', frag)[0].onclick = this.dateCellClicked;
 		return frag;
 	};
 
@@ -132,6 +173,7 @@
 
 	function show() {
 		this.resolveSelector(this.container);
+		this.container.className += ' fzk-dp';
 		this.container.innerHTML = '';
 		this.container.appendChild(this.render());
 	};
@@ -160,6 +202,6 @@
 		return document.getElementById(id);
 	};
 	function $$(selector, scope) {
-		return (scope || document).querySelectorAll(selector);
+		return Array.prototype.slice.call((scope || document).querySelectorAll(selector));
 	};
 }();

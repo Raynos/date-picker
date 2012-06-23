@@ -1,21 +1,21 @@
-	<header>
-	{{#showControls}}
-	<button>Previous month</button>
-	{{/showControls}}
-	{{#weekdays}}
-	<span class="cell-date-header">{{.}}</span>
-	{{/weekdays}}
-	{{#showControls}}
-	<button>Next month</button>
-	{{/showControls}}
-	</header>
+<div class="fzk-dp-ctrls">
+	<label class="fzk-dp-month">{{current}}</label>
+	<button class="fzk-dp-btn-prv">Prev</button>
+	<button class="fzk-dp-btn-nxt">Next</button>
+</div>
 
-	{{#prev-month}}
-	<span class="cell-date prev-month" data-date={{fullDate}}>{{date}}</span>
-	{{/prev-month}}
-	{{#cur-month}}
-	<span class="cell-date" data-date={{fullDate}}>{{date}}</span>
-	{{/cur-month}}
-	{{#next-month}}
-	<span class="cell-date next-month" data-date={{fullDate}}>{{date}}</span>
-	{{/next-month}}
+<div class="fzk-dp-lbls">
+	{{#weekdays}}<label
+	class="fzk-dp-cell">{{.}}</label
+	>{{/weekdays}}
+</div>
+
+<div class="fzk-dp-cells"
+	>{{#prev-month}}<span
+	class="fzk-dp-cell fzk-dp-cell-prv" data-date={{fullDate}}>{{date}}</span
+	>{{/prev-month}}{{#cur-month}}<span
+	class="fzk-dp-cell{{#current}} fzk-dp-cell-current{{/current}}" data-date={{fullDate}}>{{date}}</span
+	>{{/cur-month}}{{#next-month}}<span
+	class="fzk-dp-cell fzk-dp-cell-nxt" data-date={{fullDate}}>{{date}}</span
+	>{{/next-month}}
+</div>

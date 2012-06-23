@@ -1,0 +1,43 @@
+/* outer container */
+.fzk-dp {
+	width: 210px;
+}
+
+/* navigation controls */
+.fzk-dp-ctrls {}
+.fzk-dp-btn-prv {}
+.fzk-dp-btn-nxt {}
+
+/* header labels */
+.fzk-dp-lbls {
+	border-bottom: 1px solid black;
+	margin-bottom: 2px;
+}
+.fzk-dp-lbls .fzk-dp-cell {
+	font-weight: bold;
+	cursor: default;
+}
+
+/* cells */
+.fzk-dp-cell {
+	cursor: pointer;
+	display: inline-block;
+	width: 28px;
+	text-align: center;
+	border: 1px solid transparent;
+}
+
+.fzk-dp-cells .fzk-dp-cell:hover {
+	background: #eee;
+}
+
+.fzk-dp-cell-current {
+	border: 1px solid green;
+}
+
+  .fzk-dp-cell-nxt
+, .fzk-dp-cell-prv
+{
+	color: #888;
+}
+.fzk-dp-cell-nxt {}
