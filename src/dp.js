@@ -3,8 +3,15 @@
 
 	ctor.prototype =
 		{ show: show
-		, resolveSelector: resolveSelector
+		, hide: hide
 		, render: render
+		, on: on
+		, off: off
+
+		, emit: emit
+		, trigger: emit
+
+		, resolveSelector: resolveSelector
 		, renderControls: renderControls
 		, renderHeaderLabels: renderHeaderLabels
 		, renderDateCells: renderDateCells
@@ -17,7 +24,7 @@
 	ctor.getOverflowNext = getOverflowNext;
 	ctor.getOverflowPrev = getOverflowPrev;
 
-	function ctor(container) {
+	function ctor(container, options) {
 		this.container = container;
 		this.options =
 			{ weekStart: 1 // 1 == monday
@@ -27,6 +34,14 @@
 			, date: new Date()
 			};
 
+		this._events = {};
+
+		if(options) {
+			Object.keys(options).forEach(function(key) {
+				this.options[key] = options[key];
+			}, this);
+		}
+
 		[ 'nextMonth'
 		, 'prevMonth'
 		, 'dateCellClicked'
@@ -34,6 +49,41 @@
 			.forEach(function(func) {
 				this[func] = this[func].bind(this);
 			}, this)
+	};
+
+	function on(event, callback) {
+		if(typeof(callback) != 'function') {
+			throw new Error('Second argument needs to be a function');
+		}
+		if(!this._events[event]) {
+			this._events[event] = [];
+		}
+		this._events[event].push(callback);
+
+		return this;
+	};
+	function off(event, callback) {
+		if(!this._events[event]) {
+			return;
+		}
+		var index
+		while((index = this._events[event].indexOf(callback)) > -1) {
+			this._events[event].splice(index, 1);
+		}
+
+		return this;
+	};
+	function emit(event) {
+		var listeners = this._events[event]
+		  , args = Array.prototype.slice.call(arguments, 1)
+
+		if(listeners) {
+			listeners.forEach(function(cb) {
+				cb.apply(null, args);
+			});
+		}
+
+		return this;
 	};
 
 	function dateCellClicked(event) {
@@ -82,19 +132,19 @@
 		return frag;
 	};
 	function renderControls() {
-		var div = celm('div', { className: 'fzk-dp-ctrls' })
+		var div = createElement('div', { className: 'fzk-dp-ctrls' })
 		  , now = this.options.date
-		div.appendChild(celm('label',
+		div.appendChild(createElement('label',
 			{ className: 'fzk-dp-month'
 			, innerHTML: this.options.months[now.getMonth()] + ' ' + now.getFullYear()
 			}
 		));
-		div.appendChild(celm('button',
+		div.appendChild(createElement('button',
 			{ className: 'fzk-dp-btn-prv'
 			, innerHTML: this.options.buttons.prev
 			}
 		));
-		div.appendChild(celm('button',
+		div.appendChild(createElement('button',
 			{ className: 'fzk-dp-btn-nxt'
 			, innerHTML: this.options.buttons.next
 			}
@@ -102,9 +152,9 @@
 		return div;
 	};
 	function renderHeaderLabels() {
-		var div = celm('div', { className: 'fzk-dp-lbls' })
+		var div = createElement('div', { className: 'fzk-dp-lbls' })
 		getWeekdays(this.options).forEach(function(weekday) {
-			div.appendChild(celm('label',
+			div.appendChild(createElement('label',
 				{ className: 'fzk-dp-cell'
 				, innerHTML: weekday
 				}
@@ -113,7 +163,7 @@
 		return div;
 	};
 	function renderDateCells() {
-		var div = celm('div', { className: 'fzk-dp-cells' })
+		var div = createElement('div', { className: 'fzk-dp-cells' })
 		  , date = this.options.date
 		  , dateStr = date.getFullYear() + '/' + padDate(date.getMonth() +1) + '/' + padDate(date.getDate())
 		  , now = new Date()
@@ -138,7 +188,7 @@
 				if(dateStr === date.fullDate) {
 					opts.className += ' fzk-dp-cell-current';
 				}
-				div.appendChild(celm('span', opts, data));
+				div.appendChild(createElement('span', opts, data));
 			};
 		};
 	};
@@ -245,7 +295,13 @@
 		}
 		this.container.innerHTML = '';
 		this.container.appendChild(this.render());
+		return this;
 	};
+	function hide() {
+		this.container.innerHTML = '';
+		return this;
+	};
+
 	function resolveSelector(sel) {
 		if(typeof(this.container) === 'string') {
 			this.container = $$(this.container)[0];
@@ -255,7 +311,7 @@
 		}
 	};
 
-	function celm(tag, opts, data) {
+	function createElement(tag, opts, data) {
 		var elm = document.createElement(tag);
 		if(opts) {
 			Object.keys(opts).forEach(function(key) {
@@ -274,6 +330,7 @@
 		return document.getElementById(id);
 	};
 	function $$(selector, scope) {
-		return Array.prototype.slice.call((scope || document).querySelectorAll(selector));
+		return Array.prototype.slice.call(
+			(scope || document).querySelectorAll(selector));
 	};
 }();
