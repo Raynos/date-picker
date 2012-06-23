@@ -10,10 +10,10 @@ Roadmap
 -------
 
 - <s>0.1</s>: Can render and navigate.
-- 0.2: Can emit events.
+- <s>0.2</s>: Can emit events.
 - 0.3: More options and customizability.
 - 0.4: Popup and binding to input element.
-- 0.5: Ender support and npm submission.
+- 0.5: Ender support.
 
 - 1.0: All done and ready for prod-use.
 

@@ -99,16 +99,20 @@
 		this.options.date.setFullYear(date[0]);
 		this.options.date.setMonth(date[1]-1);
 		this.options.date.setDate(date[2]);
+
+		this.emit('change', this.options.date, this);
 		this.show();
 	};
 	function nextMonth() {
 		this.options.date.setDate(1);
 		this.options.date.setMonth(this.options.date.getMonth() + 1);
+
 		this.show();
 	};
 	function prevMonth() {
 		this.options.date.setDate(1);
 		this.options.date.setMonth(this.options.date.getMonth() - 1);
+
 		this.show();
 	};
 
@@ -295,11 +299,13 @@
 		}
 		this.container.innerHTML = '';
 		this.container.appendChild(this.render());
-		return this;
+
+		return this.emit('show', this);
 	};
 	function hide() {
 		this.container.innerHTML = '';
-		return this;
+
+		return this.emit('hide', this);
 	};
 
 	function resolveSelector(sel) {
