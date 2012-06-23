@@ -1,9 +1,6 @@
 describe('unit/dp.spec.js', function() {
 	var dp
 	before(function() {
-		global.Hogan = { compile: sinon.stub() };
-		global.document = { getElementById: sinon.stub() };
-		global.document.getElementById.returns({});
 		require('../../src/dp')
 		dp = global.DatePicker;
 	});
