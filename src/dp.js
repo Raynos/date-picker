@@ -1,12 +1,13 @@
 !function() {
-	var template = Hogan.compile($('template').innerHTML)
-
 	this.DatePicker = ctor;
 
 	ctor.prototype =
 		{ show: show
 		, resolveSelector: resolveSelector
 		, render: render
+		, renderControls: renderControls
+		, renderHeaderLabels: renderHeaderLabels
+		, renderDateCells: renderDateCells
 		, nextMonth: nextMonth
 		, prevMonth: prevMonth
 		, dateCellClicked: dateCellClicked
@@ -22,6 +23,7 @@
 			{ weekStart: 1 // 1 == monday
 			, weekdays: [ 'su', 'mo', 'tu', 'we', 'th', 'fr', 'sa' ]
 			, months: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
+			, buttons: { next: 'Next', prev: 'Prev' }
 			, date: new Date()
 			};
 
@@ -50,30 +52,95 @@
 		this.show();
 	};
 	function nextMonth() {
+		this.options.date.setDate(1);
 		this.options.date.setMonth(this.options.date.getMonth() + 1);
 		this.show();
 	};
 	function prevMonth() {
+		this.options.date.setDate(1);
 		this.options.date.setMonth(this.options.date.getMonth() - 1);
 		this.show();
 	};
 
 	function render() {
-		var frag
+		var frag = document.createDocumentFragment()
 		  , now = this.options.date
 		  , opts =
 		    { weekdays: getWeekdays(this.options)
 		    , 'prev-month': getOverflowPrev(now, this.options)
 		    , 'next-month': getOverflowNext(now, this.options)
 		    , 'cur-month': getCurrentMonth(now)
-		    , 'current': this.options.months[now.getMonth()] + ' ' + now.getFullYear()
 		    }
 
-		frag = cfrag(template.render(opts));
+		frag.appendChild(this.renderControls());
+		frag.appendChild(this.renderHeaderLabels());
+		frag.appendChild(this.renderDateCells());
+
 		$$('.fzk-dp-btn-nxt', frag)[0].onclick = this.nextMonth;
 		$$('.fzk-dp-btn-prv', frag)[0].onclick = this.prevMonth;
 		$$('.fzk-dp-cells', frag)[0].onclick = this.dateCellClicked;
 		return frag;
+	};
+	function renderControls() {
+		var div = celm('div', { className: 'fzk-dp-ctrls' })
+		  , now = this.options.date
+		div.appendChild(celm('label',
+			{ className: 'fzk-dp-month'
+			, innerHTML: this.options.months[now.getMonth()] + ' ' + now.getFullYear()
+			}
+		));
+		div.appendChild(celm('button',
+			{ className: 'fzk-dp-btn-prv'
+			, innerHTML: this.options.buttons.prev
+			}
+		));
+		div.appendChild(celm('button',
+			{ className: 'fzk-dp-btn-nxt'
+			, innerHTML: this.options.buttons.next
+			}
+		));
+		return div;
+	};
+	function renderHeaderLabels() {
+		var div = celm('div', { className: 'fzk-dp-lbls' })
+		getWeekdays(this.options).forEach(function(weekday) {
+			div.appendChild(celm('label',
+				{ className: 'fzk-dp-cell'
+				, innerHTML: weekday
+				}
+			));
+		});
+		return div;
+	};
+	function renderDateCells() {
+		var div = celm('div', { className: 'fzk-dp-cells' })
+		  , date = this.options.date
+		  , dateStr = date.getFullYear() + '/' + padDate(date.getMonth() +1) + '/' + padDate(date.getDate())
+		  , now = new Date()
+		  , nowStr = now.getFullYear() + '/' + padDate(now.getMonth() +1) + '/' + padDate(now.getDate())
+
+		getOverflowPrev(date, this.options).forEach(addToDiv('fzk-dp-cell-prv'));
+		getCurrentMonth(date).forEach(addToDiv(''));
+		getOverflowNext(date, this.options).forEach(addToDiv('fzk-dp-cell-nxt'));
+
+		return div;
+
+		function addToDiv(className) {
+			return function(date) {
+				var opts =
+					{ className: 'fzk-dp-cell ' + className
+					, innerHTML: date.date
+					}
+				  , data = { date: date.fullDate }
+				if(nowStr === date.fullDate) {
+					opts.className += ' fzk-dp-cell-today';
+				}
+				if(dateStr === date.fullDate) {
+					opts.className += ' fzk-dp-cell-current';
+				}
+				div.appendChild(celm('span', opts, data));
+			};
+		};
 	};
 
 	function getWeekdays(opts) {
@@ -173,7 +240,9 @@
 
 	function show() {
 		this.resolveSelector(this.container);
-		this.container.className += ' fzk-dp';
+		if(!/(^| )fzk-dp($| )/.test(this.container.className)) {
+			this.container.className += ' fzk-dp';
+		}
 		this.container.innerHTML = '';
 		this.container.appendChild(this.render());
 	};
@@ -186,16 +255,19 @@
 		}
 	};
 
-	function cfrag(html) {
-		var div = document.createElement('div')
-		  , frag = document.createDocumentFragment()
-		  , elm
-
-		div.innerHTML = html;
-		while(elm = div.firstChild) {
-			frag.appendChild(elm);
+	function celm(tag, opts, data) {
+		var elm = document.createElement(tag);
+		if(opts) {
+			Object.keys(opts).forEach(function(key) {
+				elm[key] = opts[key];
+			});
 		}
-		return frag;
+		if(data) {
+			Object.keys(data).forEach(function(key) {
+				elm.dataset[key] = data[key];
+			});
+		}
+		return elm;
 	};
 
 	function $(id) {

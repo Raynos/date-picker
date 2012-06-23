@@ -34,6 +34,9 @@
 .fzk-dp-cell-current {
 	border: 1px solid green;
 }
+.fzk-dp-cell-today {
+	background: green;
+}
 
   .fzk-dp-cell-nxt
 , .fzk-dp-cell-prv
