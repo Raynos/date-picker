@@ -1,0 +1,101 @@
+<!doctype html>
+
+<meta charset=utf-8>
+<meta http-equiv=X-UA-Compatible content=chrome=1>
+<title>date-picker by fizker</title>
+<link href=_.css rel=stylesheet>
+
+
+<div id=header>
+<nav class="topnav">
+	<a class="fork" href=https://github.com/fizker/date-picker>View On GitHub</a>
+	<label class="title">Downloads:</label>
+	<a class="downloads" href=https://github.com/fizker/date-picker/tarball/master>TAR</a>
+	<a class="downloads" href=https://github.com/fizker/date-picker/zipball/master>ZIP</a>
+</nav>
+</div>
+
+<section id=content>
+	<h1>date-picker</h1>
+	<p class="subhead">A simple lightweight date-picker, with no external dependencies</p>
+	<nav class="main-nav">
+		<a href=index.html>Basic info</a>
+		<a href=examples.html>Examples</a>
+	</nav>
+	<hr>
+
+<p><link href=lib/dp.css rel=stylesheet></p>
+
+<script src=lib/dp.js>
+</script>
+
+<h2>Static date-pickers</h2>
+
+<p>To show a static, always-present, date picker, simply create it and point it at
+a container element.</p>
+
+<p>Please note that we can easily register to get the selected date.</p>
+
+<pre><code>Date-picker goes here:
+&lt;div id=container&gt;&lt;/div&gt;
+&lt;div id=result&gt;&lt;/div&gt;
+
+&lt;script&gt;
+new DatePicker().show('#container').on('change', function(date) {
+    document.getElementById('result').innerHTML = date.toString();
+});
+&lt;/script&gt;
+</code></pre>
+
+<p>It will produce the following content:</p>
+
+<div class="example">
+
+Date-picker goes here:
+<div id=container></div>
+<div id=result></div>
+
+<script>
+new DatePicker().show('#container').on('change', function(date) {
+    document.getElementById('result').innerHTML = date.toString();
+});
+</script>
+
+</div>
+
+<hr />
+
+<p>To have a date-picker that automatically picks up the content of an input-field,
+simply point it at an input-field instead of a container-element.</p>
+
+<p>We do have to open the date-picker manually, either by having a button for it or
+by registering <code>onblur</code> and <code>onfocus</code> on the input.</p>
+
+<pre><code>Date-picker goes here:
+&lt;input name=date&gt;
+&lt;button onclick="dp.toggle('input[name=date]')"&gt;Toggle date-picker&lt;/button&gt;
+
+&lt;script&gt;
+var dp = new DatePicker()
+&lt;/script&gt;
+</code></pre>
+
+<div class="example">
+    Date-picker goes here:
+    <input name=date value="2012/02/15">
+    <button onclick="dp.toggle('input[name=date]')">Toggle date-picker</button>
+
+    <script>
+    var dp = new DatePicker()
+    </script>
+</div>
+
+<p>It automatically picks up the current value in the text-field, and puts the
+selected value back in there.</p>
+
+
+	<hr>
+	<span class="credits left">Project maintained by <a href=https://github.com/fizker>fizker</a></span>
+	<span class="credits right">Hosted on GitHub Pages</span>
+
+</section>

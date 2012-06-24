@@ -1,6 +1,4 @@
 
-For examples, see [the examples page](example.html).
-
 Roadmap
 -------
 

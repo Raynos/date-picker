@@ -1,0 +1,93 @@
+a {
+	text-decoration: none;
+	color: #21b;
+}
+
+  .topnav
+, #content
+{
+	width: 700px;
+	margin: 0 auto;
+	position: relative;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background: #ddd;
+}
+
+#header {
+	min-width: 700px;
+	background: #888;
+	padding: 10px;
+	margin: 0;
+	border-bottom: 6px solid #666;
+}
+
+.topnav {
+	text-align: right;
+}
+.topnav a {
+	color: white;
+	border: 1px solid #5d910b;
+	background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #93bd20), color-stop(100%, #659e10));
+	background: -webkit-linear-gradient(#93bd20, #659e10);
+	background: -moz-linear-gradient(#93bd20, #659e10);
+	background: -o-linear-gradient(#93bd20, #659e10);
+	background: linear-gradient(#93bd20, #659e10);
+
+	border-radius: 2px;
+
+	-webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3), 0px 3px 7px rgba(0, 0, 0, 0.7);
+	box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3), 0px 3px 7px rgba(0, 0, 0, 0.7);
+
+	background-color: #93bd20;
+	padding: 8px 12px;
+	margin: 0;
+	font-size: 14px;
+	display: inline-block;
+	text-align: center;
+}
+.topnav a.fork {
+	position: absolute;
+	left: 0;
+}
+.topnav .title {
+	color: white;
+	text-shadow: black 1px 1px 3px;
+	margin: 0 5px;
+	text-transform: uppercase;
+}
+
+.main-nav a:not(:first-child)::before {
+	content: '|';
+	padding: 0 .5em;
+	color: black;
+}
+
+  h1
+, .subhead
+{
+	text-align: center;
+}
+
+.credits.right {
+	position: absolute;
+	right: 0;
+}
+
+  pre
+, code
+, .example
+{
+	background: #aaa;
+}
+
+  pre
+, .example
+{
+	margin: 5px 10px;
+	padding: 5px 10px;
+	border-radius: 10px;
+}
