@@ -421,8 +421,8 @@
 		  , docElm = doc.documentElement
 
 		  , scroll =
-		    { top: docElm.scrollTop
-		    , left: docElm.scrollLeft
+		    { top: docElm.scrollTop || body.scrollTop
+		    , left: docElm.scrollLeft || body.scrollLeft
 		    }
 		  , client =
 		    { top: docElm.clientTop || body.clientTop || 0
