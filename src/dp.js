@@ -28,14 +28,14 @@
 	ctor.getOverflowNext = getOverflowNext;
 	ctor.getOverflowPrev = getOverflowPrev;
 
-	function ctor(container, options) {
-		this.container = container;
+	function ctor(options) {
 		this.options =
 			{ weekStart: 1 // 1 == monday
 			, weekdays: [ 'su', 'mo', 'tu', 'we', 'th', 'fr', 'sa' ]
 			, months: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
-			, buttons: { next: 'Next', prev: 'Prev' }
+			, buttons: { next: 'Next', prev: 'Prev', close: '×' }
 			, date: new Date()
+			, floatingOverlay: false
 			};
 
 		this._events = {};
@@ -136,29 +136,37 @@
 	function render() {
 		var frag = document.createDocumentFragment()
 		  , now = this._visibleDate || this.options.date
-		  , opts =
-		    { weekdays: getWeekdays(this.options)
-		    , 'prev-month': getOverflowPrev(now, this.options)
-		    , 'next-month': getOverflowNext(now, this.options)
-		    , 'cur-month': getCurrentMonth(now)
-		    }
-		  , overlay = createElement('div', { className: 'fzk-dp-overlay' })
+		  , overlay = this._elms.floater && this.options.floatingOverlay
+		    ? createElement('div', { className: 'fzk-dp-overlay' })
+		    : null
+		  , showCloseButton = !!this._elms.floater
+		  , hide = this.hide.bind(this)
 
-		if(this._elms.floater) {
+		if(overlay) {
 			frag.appendChild(overlay);
 		}
-		frag.appendChild(this.renderControls());
+		frag.appendChild(this.renderControls(showCloseButton));
 		frag.appendChild(this.renderHeaderLabels());
 		frag.appendChild(this.renderDateCells());
 
-		overlay.onclick = this.hide.bind(this);
+		// Closing the overlay
+		if(overlay) {
+			overlay.onclick = hide;
+		}
+		if(showCloseButton) {
+			$$('.fzk-dp-btn-cls', frag)[0].onclick = hide;
+		}
+
+		// Navigating between months
 		$$('.fzk-dp-btn-nxt', frag)[0].onclick = this.nextMonth;
 		$$('.fzk-dp-btn-prv', frag)[0].onclick = this.prevMonth;
+
+		// Selecting a date
 		$$('.fzk-dp-cells', frag)[0].onclick = this.dateCellClicked;
 
 		return frag;
 	};
-	function renderControls() {
+	function renderControls(showCloseButton) {
 		var div = createElement('div', { className: 'fzk-dp-ctrls' })
 		  , now = this._visibleDate
 		div.appendChild(createElement('label',
@@ -176,6 +184,13 @@
 			, innerHTML: this.options.buttons.next
 			}
 		));
+		if(showCloseButton) {
+			div.appendChild(createElement('button',
+				{ className: 'fzk-dp-btn-cls'
+				, innerHTML: this.options.buttons.close
+				}
+			));
+		}
 		return div;
 	};
 	function renderHeaderLabels() {
@@ -330,7 +345,7 @@
 	};
 
 	function show(selector) {
-		this.resolveSelector(selector || this.container);
+		this.resolveSelector(selector || this.options.elm);
 
 		if(this._elms.input) {
 			this.options.date =
@@ -340,9 +355,7 @@
 			this._visibleDate = new Date(this.options.date.getTime());
 		}
 
-		if(!/(^| )fzk-dp($| )/.test(this.container.className)) {
-			this.container.className += ' fzk-dp';
-		}
+		ensureClassName(this.container, 'fzk-dp');
 		this.container.innerHTML = '';
 		this.container.appendChild(this.render());
 
@@ -374,8 +387,8 @@
 	};
 
 	function resolveSelector(sel) {
-		this.container = typeof(sel) === 'string'
-			? this.container = $$(sel)[0]
+		this.container = (typeof(sel) === 'string')
+			? $$(sel)[0]
 			: sel;
 
 		if(!this.container) {
@@ -449,6 +462,14 @@
 		}
 		return elm;
 	};
+
+	function ensureClassName(elm, className) {
+		if(!new RegExp('(^| )' + className + '($| )')
+			.test(elm.className))
+		{
+			elm.className += ' ' + className;
+		}
+	}
 
 	function $(id) {
 		return document.getElementById(id);
