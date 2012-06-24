@@ -12,7 +12,7 @@
 <script src=../src/dp.js></script>
 
 <script>
-var dp = new DatePicker({ elm: '#static-container' }).show()
+var dp = new DatePicker().show('#static-container')
   , floater = new DatePicker()
 dp.on('change', function(date) {
 	$('message-area').innerHTML = 'Date selected: '+ date.toISOString();

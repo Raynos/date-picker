@@ -345,7 +345,7 @@
 	};
 
 	function show(selector) {
-		this.resolveSelector(selector || this.options.elm);
+		this.resolveSelector(selector || this.selector || this.options.elm);
 
 		if(this._elms.input) {
 			this.options.date =
