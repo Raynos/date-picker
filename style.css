@@ -91,3 +91,23 @@ body {
 	padding: 5px 10px;
 	border-radius: 10px;
 }
+
+table.ex-methods {
+	border-collapse: collapse;
+	width: 100%;
+}
+.ex-methods tr:not(:first-child) {
+	border-top: 1px solid black;
+}
+table.ex-methods td:first-child {
+	font-family: monospace;
+	border-right: 1px solid #999;
+	vertical-align: top;
+	width: 0px;
+	white-space: nowrap;
+	padding-left: 0;
+}
+.ex-methods td {
+	padding: 5px;
+	width: 100%;
+}
