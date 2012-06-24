@@ -20,6 +20,8 @@
 		, nextMonth: nextMonth
 		, prevMonth: prevMonth
 		, dateCellClicked: dateCellClicked
+
+		, _removeFloater: _removeFloater
 		};
 
 	ctor.getCurrentMonth = getCurrentMonth;
@@ -305,8 +307,8 @@
 		return date < 10 ? '0' + date : date.toString();
 	};
 
-	function show() {
-		this.resolveSelector(this.container);
+	function show(selector) {
+		this.resolveSelector(selector || this.container);
 		if(!/(^| )fzk-dp($| )/.test(this.container.className)) {
 			this.container.className += ' fzk-dp';
 		}
@@ -319,42 +321,47 @@
 	};
 	function hide() {
 		this.container.innerHTML = '';
+		this._removeFloater();
+		this.showing = false;
+		this.selector = null;
+
+		return this.emit('hide', this);
+	};
+	function toggle(selector) {
+		if(this.showing && (!selector || this.selector === selector)) {
+			return this.hide();
+		}
+		return this.show(selector);
+	};
+
+	function _removeFloater() {
 		if(this._elms.floater) {
 			this._elms.floater.parentNode.removeChild(this._elms.floater);
 			this._elms.floater = null;
 		}
-		this.showing = false;
-
-		return this.emit('hide', this);
-	};
-	function toggle() {
-		if(this.showing) {
-			return this.hide();
-		}
-		return this.show();
 	};
 
 	function resolveSelector(sel) {
-		if(typeof(this.container) === 'string') {
-			this.container = $$(this.container)[0];
-		}
+		this.container = typeof(sel) === 'string'
+			? this.container = $$(sel)[0]
+			: sel;
+
 		if(!this.container) {
 			throw new Error('<' + sel + '> does not resolve to any element!');
 		}
+		this.selector = sel;
+
 		if(this.container.tagName.toLowerCase() === 'input') {
 			this._elms.input = this.container;
 		}
-		if(this._elms.floater) {
-			this.container = this._elms.floater;
-			return;
-		}
+		this._removeFloater();
 		if(this._elms.input) {
 			this._elms.floater = this.container
 				= createElement('div', { className: 'fzk-dp-float' });
-			this._elms.input.parentNode.appendChild(this._elms.floater);
+			document.body.appendChild(this._elms.floater);
 			var offset = getOffset(this._elms.input);
-			this.container.style.left = offset.left;
-			this.container.style.top = offset.top;
+			this.container.style.left = offset.left + 'px';
+			this.container.style.top = (offset.top + offset.height) + 'px';
 		}
 	};
 
@@ -380,6 +387,8 @@
 		return (
 			{ top: box.top + scroll.top - client.top
 			, left: box.left + scroll.left - client.left
+			, width: box.width
+			, height: box.height
 			}
 		);
 	};

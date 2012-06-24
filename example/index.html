@@ -5,7 +5,7 @@
 <h1>Date picker</h1>
 <div id=static-container></div>
 
-<div><input><button onclick="dpInput.toggle()">Toggle</button></div>
+<div><input><button onclick="floater.toggle(this.previousElementSibling)">Toggle</button></div>
 
 <div id=message-area></div>
 
@@ -13,7 +13,7 @@
 
 <script>
 var dp = new DatePicker('#static-container').show()
-  , dpInput = new DatePicker('input')
+  , floater = new DatePicker()
 dp.on('change', function(date) {
 	$('message-area').innerHTML = 'Date selected: '+ date.toISOString();
 });
