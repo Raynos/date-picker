@@ -109,6 +109,8 @@
 		this.options.date.setMonth(date[1]-1);
 		this.options.date.setDate(date[2]);
 
+		this._visibleDate = this.options.date;
+
 		this.emit('change', this.options.date, this);
 
 		if(this._elms.floater) {
@@ -119,21 +121,21 @@
 		this.show();
 	};
 	function nextMonth() {
-		this.options.date.setDate(1);
-		this.options.date.setMonth(this.options.date.getMonth() + 1);
+		this._visibleDate.setDate(1);
+		this._visibleDate.setMonth(this._visibleDate.getMonth() + 1);
 
 		this.show();
 	};
 	function prevMonth() {
-		this.options.date.setDate(1);
-		this.options.date.setMonth(this.options.date.getMonth() - 1);
+		this._visibleDate.setDate(1);
+		this._visibleDate.setMonth(this._visibleDate.getMonth() - 1);
 
 		this.show();
 	};
 
 	function render() {
 		var frag = document.createDocumentFragment()
-		  , now = this.options.date
+		  , now = this._visibleDate || this.options.date
 		  , opts =
 		    { weekdays: getWeekdays(this.options)
 		    , 'prev-month': getOverflowPrev(now, this.options)
@@ -152,7 +154,7 @@
 	};
 	function renderControls() {
 		var div = createElement('div', { className: 'fzk-dp-ctrls' })
-		  , now = this.options.date
+		  , now = this._visibleDate
 		div.appendChild(createElement('label',
 			{ className: 'fzk-dp-month'
 			, innerHTML: this.options.months[now.getMonth()] + ' ' + now.getFullYear()
@@ -183,10 +185,24 @@
 	};
 	function renderDateCells() {
 		var div = createElement('div', { className: 'fzk-dp-cells' })
-		  , date = this.options.date
-		  , dateStr = date.getFullYear() + '/' + padDate(date.getMonth() +1) + '/' + padDate(date.getDate())
+
+		  , date = this._visibleDate
+		  , dateStr =
+		    date.getFullYear() + '/'
+		    + padDate(date.getMonth() +1) + '/'
+		    + padDate(date.getDate())
+
+		  , selected = this.options.date
+		  , selectedStr =
+		    selected.getFullYear() + '/'
+		    + padDate(selected.getMonth() +1) + '/'
+		    + padDate(selected.getDate())
+
 		  , now = new Date()
-		  , nowStr = now.getFullYear() + '/' + padDate(now.getMonth() +1) + '/' + padDate(now.getDate())
+		  , nowStr =
+		    now.getFullYear() + '/'
+		    + padDate(now.getMonth() +1) + '/'
+		    + padDate(now.getDate())
 
 		getOverflowPrev(date, this.options).forEach(addToDiv('fzk-dp-cell-prv'));
 		getCurrentMonth(date).forEach(addToDiv(''));
@@ -204,7 +220,7 @@
 				if(nowStr === date.fullDate) {
 					opts.className += ' fzk-dp-cell-today';
 				}
-				if(dateStr === date.fullDate) {
+				if(selectedStr === date.fullDate) {
 					opts.className += ' fzk-dp-cell-current';
 				}
 				div.appendChild(createElement('span', opts, data));
@@ -309,6 +325,15 @@
 
 	function show(selector) {
 		this.resolveSelector(selector || this.container);
+
+		if(this._elms.input) {
+			this.options.date =
+				parseDate(this._elms.input.value) || this.options.date;
+		}
+		if(!this._visibleDate) {
+			this._visibleDate = new Date(this.options.date.getTime());
+		}
+
 		if(!/(^| )fzk-dp($| )/.test(this.container.className)) {
 			this.container.className += ' fzk-dp';
 		}
@@ -323,6 +348,7 @@
 		this.container.innerHTML = '';
 		this._removeFloater();
 		this.showing = false;
+		this._visibleDate = null;
 		this.selector = null;
 
 		return this.emit('hide', this);
@@ -391,6 +417,16 @@
 			, height: box.height
 			}
 		);
+	};
+
+	function parseDate(str) {
+		var date = str.split('/');
+
+		if(!str || date.length != 3) {
+			return null;
+		}
+
+		return new Date(date[0], date[1]-1, date[2]);
 	};
 
 	function createElement(tag, opts, data) {
