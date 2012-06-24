@@ -1,9 +1,10 @@
 date-picker
-============
+===========
 
 A simple lightweight date-picker, with no external dependencies.
 
-Open [example/index.html](example/index.html) to see it in effect.
+Open [fizker.github.com/date-picker](http://fizker.github.com/date-picker) to
+see it in effect, and for more documentation.
 
 
 Roadmap
@@ -11,25 +12,13 @@ Roadmap
 
 - <s>0.1</s>: Can render and navigate.
 - <s>0.2</s>: Can emit events.
-- 0.3: Popup and binding to input element.
+- <s>0.3</s>: Popup and binding to input element.
 - 0.4: More options and customizability.
 - 0.5: Ender support.
-- 0.6: Full support for touch devices.
+- 0.6: Full support for iOS devices.
+- 0.7: Better cross-browser support.
 
 - 1.0: All done and ready for prod-use.
-
-
-Options
--------
-
-It supports the following options (the values below are the defaults):
-
-	{ weekStart: 1 // 1 == monday
-	, weekdays: [ 'su', 'mo', 'tu', 'we', 'th', 'fr', 'sa' ]
-	, months: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
-	, buttons: { next: 'Next', prev: 'Prev' }
-	, date: new Date()
-	}
 
 
 Special thanks

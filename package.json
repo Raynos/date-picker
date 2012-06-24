@@ -1,7 +1,7 @@
 { "author": "Benjamin Horsleben <benjamin@fizkerinc.dk> (http://finc.dk)"
 , "name": "date-picker"
 , "description": "A simple client-side date-picker"
-, "version": "0.2.0"
+, "version": "0.3.0"
 , "dependencies": {}
 , "scripts":
   { "test": "mocha"
@@ -20,4 +20,5 @@
   { "type": "git"
   , "url": "git://github.com/fizker/date-picker.git"
   }
+, "homepage": "http://fizker.github.com/date-picker"
 }
