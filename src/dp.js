@@ -142,14 +142,20 @@
 		    , 'next-month': getOverflowNext(now, this.options)
 		    , 'cur-month': getCurrentMonth(now)
 		    }
+		  , overlay = createElement('div', { className: 'fzk-dp-overlay' })
 
+		if(this._elms.floater) {
+			frag.appendChild(overlay);
+		}
 		frag.appendChild(this.renderControls());
 		frag.appendChild(this.renderHeaderLabels());
 		frag.appendChild(this.renderDateCells());
 
+		overlay.onclick = this.hide.bind(this);
 		$$('.fzk-dp-btn-nxt', frag)[0].onclick = this.nextMonth;
 		$$('.fzk-dp-btn-prv', frag)[0].onclick = this.prevMonth;
 		$$('.fzk-dp-cells', frag)[0].onclick = this.dateCellClicked;
+
 		return frag;
 	};
 	function renderControls() {

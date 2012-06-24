@@ -10,9 +10,19 @@
 	z-index: 10;
 	box-shadow: 0 0 10px black;
 }
+.fzk-dp-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: transparent;
+}
 
 /* navigation controls */
-.fzk-dp-ctrls {}
+.fzk-dp-ctrls {
+	position: relative;
+}
 .fzk-dp-btn-prv {}
 .fzk-dp-btn-nxt {}
 
@@ -20,6 +30,7 @@
 .fzk-dp-lbls {
 	border-bottom: 1px solid black;
 	margin-bottom: 2px;
+	position: relative;
 }
 .fzk-dp-lbls .fzk-dp-cell {
 	font-weight: bold;
@@ -27,6 +38,10 @@
 }
 
 /* cells */
+.fzk-dp-cells {
+	position: relative;
+}
+
 .fzk-dp-cell {
 	cursor: pointer;
 	display: inline-block;
