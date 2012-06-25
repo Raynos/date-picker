@@ -154,15 +154,15 @@
 			overlay.onclick = hide;
 		}
 		if(showCloseButton) {
-			$$('.fzk-dp-btn-cls', frag)[0].onclick = hide;
+			$$('.fzk-dp-btn-cls', frag).onclick = hide;
 		}
 
 		// Navigating between months
-		$$('.fzk-dp-btn-nxt', frag)[0].onclick = this.nextMonth;
-		$$('.fzk-dp-btn-prv', frag)[0].onclick = this.prevMonth;
+		$$('.fzk-dp-btn-nxt', frag).onclick = this.nextMonth;
+		$$('.fzk-dp-btn-prv', frag).onclick = this.prevMonth;
 
 		// Selecting a date
-		$$('.fzk-dp-cells', frag)[0].onclick = this.dateCellClicked;
+		$$('.fzk-dp-cells', frag).onclick = this.dateCellClicked;
 
 		return frag;
 	};
@@ -388,11 +388,11 @@
 
 	function resolveSelector(sel) {
 		this.container = (typeof(sel) === 'string')
-			? $$(sel)[0]
+			? $$(sel)
 			: sel;
 
 		if(!this.container) {
-			throw new Error('<' + sel + '> does not resolve to any element!');
+			throw new Error('"' + sel + '" does not resolve to an element!');
 		}
 		this.selector = sel;
 
@@ -471,11 +471,20 @@
 		}
 	}
 
-	function $(id) {
-		return document.getElementById(id);
-	};
-	function $$(selector, scope) {
+
+	/**
+	 * These two helpers are inverted from what the webkit console expects
+	 * (which was derived from the Prototype framework) in order to match the
+	 * jQuery behaviour more closely.
+	 *
+	 * $: Acts more or less like jQuery, except it is based on querySelectorAll.
+	 * $$: Basically an optimized version of $(sel, scope)[0].
+	 */
+	function $(selector, scope) {
 		return Array.prototype.slice.call(
 			(scope || document).querySelectorAll(selector));
+	};
+	function $$(selector, scope) {
+		return (scope || document).querySelector(selector);
 	};
 }();

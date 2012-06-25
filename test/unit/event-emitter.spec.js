@@ -1,11 +1,6 @@
-describe('unit/events.spec.js', function() {
-	var ctor
+describe('unit/event-emitter.spec.js', function() {
+	var ctor = require('../helpers/date-picker')
 	  , dp
-
-	before(function() {
-		require('../../src/dp')
-		ctor = global.DatePicker;
-	});
 
 	beforeEach(function() {
 		dp = new ctor();

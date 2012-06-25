@@ -1,16 +1,13 @@
-describe('unit/dp.spec.js', function() {
-	var dp
-	before(function() {
-		require('../../src/dp')
-		dp = global.DatePicker;
-	});
+// This tests the static functions exposed on the DatePicker constructor
+describe('unit/statics.spec.js', function() {
+	var ctor = require('../helpers/date-picker')
 
 	describe('When calling getCurrentMonth() with january 11th', function() {
 		var result
 		  , opts
 		beforeEach(function() {
 			var date = new Date('2012-01-11T12:00:00Z')
-			result = dp.getCurrentMonth(date, opts);
+			result = ctor.getCurrentMonth(date, opts);
 		});
 		it('should return all days in the month', function() {
 			expect(result.length).to.equal(31);
@@ -44,7 +41,7 @@ describe('unit/dp.spec.js', function() {
 		describe('and the last day is a thursday', function() {
 			beforeEach(function() {
 				var now = new Date('2012-05-01T12:00:00Z')
-				result = dp.getOverflowNext(now, opts)
+				result = ctor.getOverflowNext(now, opts)
 			});
 			it('should return three days', function() {
 				expect(result.length).to.equal(5);
@@ -73,7 +70,7 @@ describe('unit/dp.spec.js', function() {
 		describe('and the last day is a saturday', function() {
 			beforeEach(function() {
 				var now = new Date('2012-03-01T12:00:00Z')
-				result = dp.getOverflowNext(now, opts)
+				result = ctor.getOverflowNext(now, opts)
 			});
 			it('should return three days', function() {
 				expect(result.length).to.equal(3);
@@ -96,7 +93,7 @@ describe('unit/dp.spec.js', function() {
 		describe('and the last day is a wednesday', function() {
 			beforeEach(function() {
 				var now = new Date('2012-02-01T12:00:00Z')
-				result = dp.getOverflowNext(now, opts)
+				result = ctor.getOverflowNext(now, opts)
 			});
 			it('should return six days', function() {
 				expect(result.length).to.equal(6);
@@ -128,7 +125,7 @@ describe('unit/dp.spec.js', function() {
 		describe('and the last day is a tuesday', function() {
 			beforeEach(function() {
 				var now = new Date('2012-01-01T12:00:00Z')
-				result = dp.getOverflowNext(now, opts)
+				result = ctor.getOverflowNext(now, opts)
 			});
 			it('should return an empty array', function() {
 				expect(result).to.deep.equal([]);
@@ -148,7 +145,7 @@ describe('unit/dp.spec.js', function() {
 		describe('and the first is a sunday', function() {
 			beforeEach(function() {
 				var now = new Date('2012-01-01T12:00:00Z')
-				result = dp.getOverflowPrev(now, opts)
+				result = ctor.getOverflowPrev(now, opts)
 			});
 			it('should return six days', function() {
 				expect(result.length).to.equal(6);
@@ -181,7 +178,7 @@ describe('unit/dp.spec.js', function() {
 		describe('and the first is a wednesday', function() {
 			beforeEach(function() {
 				var now = new Date('2012-02-01T12:00:00Z')
-				result = dp.getOverflowPrev(now, opts)
+				result = ctor.getOverflowPrev(now, opts)
 			});
 			it('should return two days', function() {
 				expect(result.length).to.equal(2);
@@ -202,7 +199,7 @@ describe('unit/dp.spec.js', function() {
 		describe('and the first is the first of the week', function() {
 			beforeEach(function() {
 				var now = new Date('2012-10-01T12:00:00Z')
-				result = dp.getOverflowPrev(now, opts)
+				result = ctor.getOverflowPrev(now, opts)
 			});
 			it('should return an empty array', function() {
 				expect(result).to.deep.equal([]);
