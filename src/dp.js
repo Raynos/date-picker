@@ -1,5 +1,6 @@
 !function() {
-	this.DatePicker = ctor;
+	var global = this
+	global.DatePicker = ctor;
 
 	ctor.prototype =
 		{ show: show
@@ -14,6 +15,7 @@
 		, trigger: emit
 
 		, resolveSelector: resolveSelector
+		, rerender: rerender
 		, renderControls: renderControls
 		, renderHeaderLabels: renderHeaderLabels
 		, renderDateCells: renderDateCells
@@ -29,6 +31,11 @@
 	ctor.getOverflowPrev = getOverflowPrev;
 
 	function ctor(options) {
+		// It should not matter if "new" keyword is used!
+		if(this === global) {
+			return new ctor(options);
+		}
+
 		this.options =
 			{ weekStart: 1 // 1 == monday
 			, weekdays: [ 'su', 'mo', 'tu', 'we', 'th', 'fr', 'sa' ]
@@ -118,7 +125,7 @@
 			return;
 		}
 
-		this.show();
+		this.rerender();
 	};
 	function nextMonth() {
 		this._visibleDate.setDate(1);
@@ -133,6 +140,18 @@
 		this.show();
 	};
 
+	function rerender() {
+		if(!this.container) {
+			return this;
+		}
+
+		var frag = this.render()
+
+		this.container.innerHTML = '';
+		this.container.appendChild(frag);
+
+		return this;
+	};
 	function render() {
 		var frag = document.createDocumentFragment()
 		  , now = this._visibleDate || this.options.date
@@ -141,6 +160,10 @@
 		    : null
 		  , showCloseButton = !!this._elms.floater
 		  , hide = this.hide.bind(this)
+
+		if(!this._visibleDate) {
+			this._visibleDate = new Date(now.getTime());
+		}
 
 		if(overlay) {
 			frag.appendChild(overlay);
@@ -356,9 +379,7 @@
 		}
 
 		ensureClassName(this.container, 'fzk-dp');
-		this.container.innerHTML = '';
-		this.container.appendChild(this.render());
-
+		this.rerender();
 		this.showing = true;
 
 		return this.emit('show', this);

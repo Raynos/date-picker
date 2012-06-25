@@ -9,25 +9,37 @@ function fakeDOM() {
 	global.document =
 		{ createDocumentFragment: createDocumentFragment
 		, createElement: createElement
-		, querySelectorAll: sinon.stub()
-		, querySelector: sinon.stub()
+		, querySelectorAll: createQuerySelectorAll()
+		, querySelector: createQuerySelector()
 		};
+};
 
-	document.querySelector.returns(null);
-	document.querySelectorAll.returns([]);
+function createQuerySelectorAll() {
+	var func = sinon.stub();
+	func.returns([]);
+	return func;
+};
+function createQuerySelector() {
+	var func = sinon.stub();
+	func.returns(null);
+	return func;
 };
 
 function createElement(elementName) {
 	return (
-		{ appendChild: function() {}
+		{ appendChild: sinon.spy()
 		, tagName: elementName.toUpperCase()
+		, dataset: {}
+		, querySelector: createQuerySelector()
+		, querySelectorAll: createQuerySelectorAll()
 		}
 	);
 };
 
 function createDocumentFragment() {
-	return (
+	return this.fakeDocFrag ||
 		{ appendChild: function() {}
-		}
-	);
+		, querySelector: createQuerySelector()
+		, querySelectorAll: createQuerySelectorAll()
+		};
 };
