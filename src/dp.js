@@ -57,18 +57,12 @@
 		this._elms = {};
 
 		if(options) {
-			Object.keys(options).forEach(function(key) {
+			_(options).keys().forEach(function(key) {
 				this.options[key] = options[key];
 			}, this);
 		}
 
-		[ 'nextMonth'
-		, 'prevMonth'
-		, 'dateCellClicked'
-		]
-			.forEach(function(func) {
-				this[func] = this[func].bind(this);
-			}, this)
+		_(this).bindAll('nextMonth', 'prevMonth', 'dateCellClicked');
 	};
 
 	function on(event, callback) {
@@ -577,6 +571,51 @@
 		}
 	}
 
+	/**
+	 * This is a (very!) raw implementation of underscore.
+	 * It takes plenty of assumptions in order to be lean!
+	 */
+	function _(obj) {
+		return (
+			{ bind: bind
+			, bindAll: bindAll
+			, keys: keys
+			, forEach: forEach
+			}
+		);
+
+		// keys() assumes obj to be any object
+		function keys() {
+			var keys = []
+			  , key
+			for(key in obj) {
+				if(obj.hasOwnProperty(key)) {
+					keys.push(key);
+				}
+			}
+			return _(keys);
+		};
+
+		// bind() assumes obj to be a function
+		function bind(ctx) {
+			return function() {
+				return obj.apply(ctx, arguments);
+			};
+		};
+
+		function bindAll(methods) {
+			methods = Array.prototype.slice.call(arguments)
+			_(methods).forEach(function(func) {
+				obj[func] = _(obj[func]).bind(obj);
+			});
+		};
+
+		function forEach(func, ctx) {
+			for(var i = 0; i < obj.length; i++) {
+				func.call(ctx, obj[i], i, obj);
+			}
+		};
+	};
 
 	/**
 	 * These two helpers are inverted from what the webkit console expects
