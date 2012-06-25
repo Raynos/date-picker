@@ -15,7 +15,16 @@ describe('unit/render.spec.js', function() {
 	});
 
 	describe('When showing on an input', function() {
+		var nextBtn
+		  , prevBtn
 		beforeEach(function() {
+			nextBtn = document.createElement('button');
+			document.fakeDocFrag.querySelector.withArgs('.fzk-dp-btn-nxt')
+				.returns(nextBtn);
+			prevBtn = document.createElement('button');
+			document.fakeDocFrag.querySelector.withArgs('.fzk-dp-btn-prv')
+				.returns(prevBtn);
+
 			inputElm.value = '04 - 2 - 2012';
 			sinon.spy(ctor, 'parseDate');
 			dp.show(inputElm);
@@ -28,6 +37,19 @@ describe('unit/render.spec.js', function() {
 		});
 		it('should use the input-value', function() {
 			expect(ctor.parseDate).to.have.been.calledWith('04 - 2 - 2012');
+		});
+
+		describe('and next/prev is clicked', function() {
+			it('should move to next', function() {
+				nextBtn.onclick();
+				// month -1 because of JS dates.
+				expect(dp._visibleDate.getMonth()).to.equal(2);
+			});
+			it('should move to prev', function() {
+				prevBtn.onclick();
+				// month -1 because of JS dates.
+				expect(dp._visibleDate.getMonth()).to.equal(0);
+			});
 		});
 	});
 	describe('When clicking a cell', function() {

@@ -138,13 +138,13 @@
 		this._visibleDate.setDate(1);
 		this._visibleDate.setMonth(this._visibleDate.getMonth() + 1);
 
-		this.show();
+		this.rerender();
 	};
 	function prevMonth() {
 		this._visibleDate.setDate(1);
 		this._visibleDate.setMonth(this._visibleDate.getMonth() - 1);
 
-		this.show();
+		this.rerender();
 	};
 
 	function rerender() {
@@ -161,7 +161,6 @@
 	};
 	function render() {
 		var frag = document.createDocumentFragment()
-		  , input = this._elms.input
 		  , now = this._visibleDate || this.options.date
 		  , overlay = this._elms.floater && this.options.floatingOverlay
 		    ? createElement('div', { className: 'fzk-dp-overlay' })
@@ -169,11 +168,6 @@
 		  , showCloseButton = !!this._elms.floater
 		  , hide = this.hide.bind(this)
 
-		if(input && input.value) {
-			this._visibleDate = null;
-			this.options.date = now =
-				ctor.parseDate(input.value, this.options.dateFormat);
-		}
 		if(!this._visibleDate) {
 			this._visibleDate = new Date(now.getTime());
 		}
@@ -454,6 +448,12 @@
 		}
 		this._removeFloater();
 		if(this._elms.input) {
+			if(this._elms.input.value) {
+				this._visibleDate = null;
+				this.options.date =
+					ctor.parseDate(this._elms.input.value, this.options.dateFormat);
+			}
+
 			this._elms.floater = this.container
 				= createElement('div', { className: 'fzk-dp-float' });
 			document.body.appendChild(this._elms.floater);
