@@ -5,6 +5,7 @@ a {
 
   .topnav
 , #content
+, #footer > div
 {
 	width: 700px;
 	margin: 0 auto;
@@ -17,12 +18,21 @@ body {
 	background: #ddd;
 }
 
-#header {
+  #header
+, #footer
+{
 	min-width: 700px;
 	background: #888;
 	padding: 10px;
 	margin: 0;
+}
+
+#header {
 	border-bottom: 6px solid #666;
+}
+#footer {
+	margin: 10px 0 0;
+	border-top: 6px solid #666;
 }
 
 .topnav {

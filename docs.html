@@ -6,14 +6,14 @@
 <link href=style.css rel=stylesheet>
 
 
-<div id=header>
+<header id=header>
 <nav class="topnav">
 	<a class="fork" href=https://github.com/fizker/date-picker>View On GitHub</a>
 	<label class="title">Downloads:</label>
 	<a class="downloads" href=https://github.com/fizker/date-picker/tarball/master>TAR</a>
 	<a class="downloads" href=https://github.com/fizker/date-picker/zipball/master>ZIP</a>
 </nav>
-</div>
+</header>
 
 <section id=content>
 	<h1>date-picker</h1>
@@ -33,15 +33,95 @@ overriding the css.</p>
 
 <h2>Exposed non-public methods</h2>
 
-<p>First off, there are more exposed methods than should be used normally; they are
-exposed for testing purposes to allow unit tests to get into the system, and for
-extreme flexibility, where a developer might want to override standard functions.</p>
+<p>There are more exposed methods than should be used normally; they are exposed
+for testing purposes to allow unit tests to get into the system, and for extreme
+flexibility, where a developer might want to override standard functions.</p>
 
-<p>I will not cover those here, and instead refer to the source code.</p>
+<p>These methods will not be covered here, but can instead be found by <a href="https://github.com/fizker/date-picker/blob/master/src/dp.js">looking at
+the code</a>.</p>
 
 <h2>Exposed methods</h2>
 
-<p>Instead, the following methods are safe for use:</p>
+<p>The methods that are exposed as public, and thus relatively stable, is described
+here.</p>
+
+<h3>Creating the date-picker</h3>
+
+<p>The constructor can take the following options:</p>
+
+<table class="ex-methods">
+<tr>
+    <td>elm
+    <td>An element to bind to. This can be a real DOM element or a CSS selector
+      pointing at an element.<br>
+      It is an alternativ to passing the element through
+      <code>#show([selector])</code> or <code>#toggle([selector])</code>.
+<tr>
+    <td>dateFormat
+    <td>A format-string signifying how the code should interpret and print out
+      dates in input-fields.<br>
+      It supports the following keys (example date being 2012/05/07):
+      <table class="ex-methods">
+      <tr>
+        <td>d
+        <td>Day with leading zero (07)
+      <tr>
+        <td>D
+        <td>Day without leading zero (7)
+      <tr>
+        <td>m
+        <td>Month with leading zero (05)
+      <tr>
+        <td>M
+        <td>Month without leading zero (5)
+      <tr>
+        <td>y
+        <td>Year with 4 digits (2012)
+      <tr>
+        <td>Y
+        <td>Year with 2 digits (12)
+      </table>
+      Any other characters will be printed as listed. It defaults to
+      <code>y/m/d</code>.
+<tr>
+    <td>weekStart
+    <td>A number signifying the first day of the week. It goes from <code>0</code>
+      (sunday) to <code>6</code> (saturday) and defaults to <code>1</code>
+      (monday). It corresponds to calling <code>Date#getDay()</code> on a
+      javascript date object.
+<tr>
+    <td>weekdays
+    <td>A list of localized day-names that should be shown above the day-cells.
+      It should start with sunday on index 0, and end with saturday on index 6.
+      It should not be much more than 2 letters of text, as that is approximately
+      what there is room for. It defaults to <code>[ 'su', 'mo', 'tu', 'we',
+      'th', 'fr', 'sa' ]</code>.
+<tr>
+    <td>months
+    <td>A localized list of month names. It starts with January on index 0 and
+      ends with December on index 11. It defaults to <code>[ 'Jan', 'Feb',
+      'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
+      'Dec' ]</code>.
+<tr>
+    <td>buttons
+    <td>Localized texts for the three buttons in the UI (Next month, previous
+      month, close). It defaults to <code>{ next: 'Next', prev: 'Prev', close:
+      '×' }</code>. Empty strings are perfectly acceptable, if CSS will be
+      controlling the look (for example with background images).
+<tr>
+    <td>date
+    <td>The date to initialize the date-picker with. It defaults to the current
+      date, or if bound to an input-element, the parsed version of the
+      input-value.
+<tr>
+    <td>floatingOverlay
+    <td>A bool telling if the floating date picker should put an overlay behind
+      that closes it when clicked. If <code>false</code> (the default), it will
+      only close when a date is selected, the user clicks the close button, or
+      <code>#hide()</code> or <code>#toggle()</code> is called via the API.<br>
+      It is only applicable if the date picker is bound to an input-element, and
+      thus floating.
+</table>
 
 <h3>Displaying</h3>
 
@@ -107,9 +187,11 @@ using the <code>on()</code> and <code>off()</code> functions as shown below:</p>
       <code>hide()</code> function.
 </table>
 
+</section>
 
-	<hr>
+<footer id="footer">
+<div>
 	<span class="credits left">Project maintained by <a href=https://github.com/fizker>fizker</a></span>
 	<span class="credits right">Hosted on GitHub Pages</span>
-
-</section>
+</div>
+</footer>
