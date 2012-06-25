@@ -2,6 +2,8 @@
 	var global = this
 	global.DatePicker = ctor;
 
+	ctor.VERSION = '0.4.0';
+
 	ctor.prototype =
 		{ show: show
 		, hide: hide
