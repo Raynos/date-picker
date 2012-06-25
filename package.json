@@ -2,9 +2,13 @@
 , "name": "date-picker"
 , "description": "A simple client-side date-picker"
 , "version": "0.3.0"
-, "dependencies": {}
+, "dependencies":
+  { "grunt": "0.3.9"
+  , "grunt-css": "0.2.1"
+  }
 , "scripts":
   { "test": "mocha"
+  , "install": "grunt"
   }
 , "devDependencies":
   { "mocha": "1.2.0"
