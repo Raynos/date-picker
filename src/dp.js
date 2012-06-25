@@ -29,6 +29,8 @@
 	ctor.getCurrentMonth = getCurrentMonth;
 	ctor.getOverflowNext = getOverflowNext;
 	ctor.getOverflowPrev = getOverflowPrev;
+	ctor.parseDate = parseDate;
+	ctor.formatDate = formatDate;
 
 	function ctor(options) {
 		// It should not matter if "new" keyword is used!
@@ -42,6 +44,7 @@
 			, months: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
 			, buttons: { next: 'Next', prev: 'Prev', close: '×' }
 			, date: new Date()
+			, dateFormat: 'y/m/d'
 			, floatingOverlay: false
 			};
 
@@ -101,13 +104,10 @@
 	function dateCellClicked(event) {
 		var elm = event.target
 		  , date = elm.dataset.date
+		  , dateFormat = this.options.dateFormat
 
 		if(!date) {
 			return;
-		}
-
-		if(this._elms.input) {
-			this._elms.input.value = date;
 		}
 
 		date = date.split('/');
@@ -115,6 +115,10 @@
 		this.options.date.setFullYear(date[0]);
 		this.options.date.setMonth(date[1]-1);
 		this.options.date.setDate(date[2]);
+
+		if(this._elms.input) {
+			this._elms.input.value = formatDate(this.options.date, dateFormat);
+		}
 
 		this._visibleDate = this.options.date;
 
@@ -272,6 +276,9 @@
 		};
 	};
 
+	/**
+	 * This method is static, and exposed as static
+	 */
 	function getWeekdays(opts) {
 		var days = []
 		  , i
@@ -284,6 +291,10 @@
 
 		return days;
 	};
+
+	/**
+	 * This method is static, and exposed as static
+	 */
 	function getCurrentMonth(now, opts) {
 		var year = now.getFullYear()
 		  , month = padDate(now.getMonth() + 1)
@@ -305,6 +316,10 @@
 
 		return days;
 	};
+
+	/**
+	 * This method is static, and exposed as static
+	 */
 	function getOverflowPrev(now, opts) {
 		var firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 		if(firstDayOfMonth.getDay() == opts.weekStart) {
@@ -333,6 +348,10 @@
 		}
 		return results;
 	};
+
+	/**
+	 * This method is static, and exposed as static
+	 */
 	function getOverflowNext(now, opts) {
 		var firstDayOfNextMonth = new Date(now.getFullYear(), now.getMonth()+1, 1)
 		if(firstDayOfNextMonth.getDay() == opts.weekStart) {
@@ -362,6 +381,10 @@
 
 		return result;
 	};
+
+	/**
+	 * This method is static
+	 */
 	function padDate(date) {
 		date = +date;
 		return date < 10 ? '0' + date : date.toString();
@@ -459,14 +482,65 @@
 		);
 	};
 
-	function parseDate(str) {
-		var date = str.split('/');
+	/**
+	 * This method is static, and exposed as static
+	 */
+	function parseDate(str, format) {
+		if(!str) {
+			return null;
+		}
+		if(!format) {
+			format = 'y/m/d';
+		}
 
-		if(!str || date.length != 3) {
+		var keys = {}
+		  , i = 1
+		  , keyMap =
+		    { m: 'month', M: 'month'
+		    , d: 'day', D: 'day'
+		    , y: 'year', Y: 'year'
+		    }
+		  , parser = new RegExp(format.replace(/[yYdDmM]/g, parseDate))
+		  , date = str.match(parser)
+
+		if(!date || date.length != 4 || !keys.day || !keys.month || !keys.year) {
 			return null;
 		}
 
-		return new Date(date[0], date[1]-1, date[2]);
+		if(date[keys.year].length == 2) {
+			date[keys.year] = (date[keys.year] < 25 ? '20' : '19') + date[keys.year];
+		}
+
+		return new Date(date[keys.year], date[keys.month]-1, date[keys.day]);
+
+		// This function is responsible for matching capture groups against
+		// keys
+		function parseDate(key) {
+			keys[keyMap[key]] = i++;
+			return '(\\d+)';
+		};
+	};
+
+	/**
+	 * This method is static, and exposed as static
+	 */
+	function formatDate(date, format) {
+		return format.replace(/([YyMmDd])/g, function(key) {
+			switch(key) {
+				case 'd':
+					return padDate(date.getDate());
+				case 'D':
+					return date.getDate();
+				case 'm':
+					return padDate(date.getMonth()+1);
+				case 'M':
+					return date.getMonth()+1;
+				case 'y':
+					return date.getFullYear();
+				case 'Y':
+					return date.getFullYear().toString().substring(2);
+			}
+		});
 	};
 
 	function createElement(tag, opts, data) {

@@ -1,0 +1,23 @@
+<!doctype html>
+
+<link href=../../src/dp.css rel=stylesheet>
+<title>Manual Floating window test</title>
+
+<section>
+	<h2>position: static</h2>
+	<input>
+	<button id=disabled onclick="dp.toggle(this.previousElementSibling)">Toggle</button>
+	<br>
+	<input placeholder=format>
+	<button onclick="createDatePicker(this.previousElementSibling.value)">Set format</button>
+</section>
+
+<script src=../../src/dp.js></script>
+<script>
+var dp
+function createDatePicker(format) {
+	if(!format) return;
+	document.querySelector('#disabled').disabled = false
+	dp = new DatePicker({ dateFormat: format })
+};
+</script>

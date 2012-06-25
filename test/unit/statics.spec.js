@@ -2,6 +2,52 @@
 describe('unit/statics.spec.js', function() {
 	var ctor = require('../helpers/date-picker')
 
+	describe('When calling formatDate(date, format)', function() {
+		var date
+		beforeEach(function() {
+			date = new Date('2012-04-05T12:00:00Z');
+		});
+		it('should return a string', function() {
+			var result = ctor.formatDate(date, 'y/m/d')
+			expect(result).to.equal('2012/04/05');
+		});
+		it('should format any format-string', function() {
+			var result = ctor.formatDate(date, 'Y Month D')
+			expect(result).to.equal('12 4onth 5');
+		});
+	});
+
+	describe('When calling parseDate(date, format)', function() {
+		it('should return a date-object', function() {
+			var result = ctor.parseDate('2012/04/03', 'y/m/d')
+			expect(result).to.be.a('date');
+		});
+		it('should work with the default format', function() {
+			var result = ctor.parseDate('2012/04/03', 'y/m/d')
+			expect(result.getFullYear()).to.equal(2012);
+			// JavaScript months go from 0->11, not 1->12!
+			expect(result.getMonth()).to.equal(3);
+			expect(result.getDate()).to.equal(3);
+		});
+		it('should parse a variant format correctly', function() {
+			var result = ctor.parseDate('4/06 - 2012', 'D/M - y')
+			expect(result.getFullYear()).to.equal(2012);
+			// JavaScript months go from 0->11, not 1->12!
+			expect(result.getMonth()).to.equal(5);
+			expect(result.getDate()).to.equal(4);
+		});
+		it('should understand short years correctly', function() {
+			var result = ctor.parseDate('4/6 - 12', 'D/M - Y')
+			expect(result.getFullYear()).to.equal(2012);
+
+			result = ctor.parseDate('4/6 - 49', 'D/M - Y')
+			expect(result.getFullYear()).to.equal(1949);
+
+			result = ctor.parseDate('4/6 - 89', 'D/M - Y')
+			expect(result.getFullYear()).to.equal(1989);
+		});
+	});
+
 	describe('When calling getCurrentMonth() with january 11th', function() {
 		var result
 		  , opts

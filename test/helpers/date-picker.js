@@ -11,6 +11,8 @@ function fakeDOM() {
 		, createElement: createElement
 		, querySelectorAll: createQuerySelectorAll()
 		, querySelector: createQuerySelector()
+		, body: createElement('body')
+		, documentElement: createElement('documentElement')
 		};
 };
 
@@ -32,6 +34,10 @@ function createElement(elementName) {
 		, dataset: {}
 		, querySelector: createQuerySelector()
 		, querySelectorAll: createQuerySelectorAll()
+		, getBoundingClientRect: sinon.stub()
+		, ownerDocument: global.document
+		, style: {}
+		, parentNode: { removeChild: sinon.spy() }
 		}
 	);
 };
