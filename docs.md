@@ -19,8 +19,29 @@ the code](https://github.com/fizker/date-picker/blob/master/src/dp.js).
 Exposed methods
 ---------------
 
-The methods that are exposed as public, and thus relatively stable, is described
-here.
+The methods that are exposed as public, and thus relatively stable, are described
+below.
+
+
+### Static methods
+
+The following methods are currently available directly on the constructor,
+without requiring a new instance first.
+
+<table class="ex-methods">
+<tr>
+	<td>formatDate(date, format)
+	<td>Returns a string-version of the date based on the given format.
+<tr>
+	<td>parseDate(dateString, format)
+	<td>Parses a string and returns a date based on the given format.
+</table>
+
+They are called in the following fashion:
+
+	var date = new Date()
+	DatePicker.formatDate(date, 'y-m-d');
+
 
 ### Creating the date-picker
 
@@ -100,6 +121,15 @@ The constructor can take the following options:
 	  thus floating.
 </table>
 
+It is used in this fashion:
+
+	var options =
+		{ dateFormat: 'y-m-d'
+		, buttons: { next: '&rarr;', prev: '&larr;', close: 'X' }
+		}
+	var dp = new DatePicker(options);
+
+
 ### Displaying
 
 <table class="ex-methods">
@@ -123,6 +153,10 @@ The constructor can take the following options:
 	  with the contents. It will not be attached to anything by
 	  <code>render()</code>. Internally, this is done by <code>show()</code>.
 </table>
+
+
+	<input name=date>
+	<button onclick="dp.toggle('input[name=date]');">Toggle</button>
 
 
 ### Events

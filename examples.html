@@ -73,26 +73,33 @@ simply point it at an input-field instead of a container-element.</p>
 by registering <code>onblur</code> and <code>onfocus</code> on the input.</p>
 
 <pre><code>Date-picker goes here:
-&lt;input name=date&gt;
+&lt;input name=date value="15-02-2012"&gt;
 &lt;button onclick="dp.toggle('input[name=date]')"&gt;Toggle date-picker&lt;/button&gt;
 
 &lt;script&gt;
-var dp = new DatePicker()
+var dp = new DatePicker({ dateFormat: 'd-m-y' })
 &lt;/script&gt;
 </code></pre>
 
 <div class="example">
     Date-picker goes here:
-    <input name=date value="2012/02/15">
+    <input name=date value="15-02-2012">
     <button onclick="dp.toggle('input[name=date]')">Toggle date-picker</button>
 
     <script>
-    var dp = new DatePicker()
+    var dp = new DatePicker({ dateFormat: 'd-m-y' })
     </script>
 </div>
 
 <p>It automatically picks up the current value in the text-field, and puts the
 selected value back in there.</p>
+
+<hr />
+
+<p>The DatePicker can also be used for formatting and parsing dates:</p>
+
+<pre><code>var date = DatePicker.parseDate('2012/05/30', 'y/m/d')
+</code></pre>
 
 </section>
 

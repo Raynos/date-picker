@@ -42,8 +42,28 @@ the code</a>.</p>
 
 <h2>Exposed methods</h2>
 
-<p>The methods that are exposed as public, and thus relatively stable, is described
-here.</p>
+<p>The methods that are exposed as public, and thus relatively stable, are described
+below.</p>
+
+<h3>Static methods</h3>
+
+<p>The following methods are currently available directly on the constructor,
+without requiring a new instance first.</p>
+
+<table class="ex-methods">
+<tr>
+    <td>formatDate(date, format)
+    <td>Returns a string-version of the date based on the given format.
+<tr>
+    <td>parseDate(dateString, format)
+    <td>Parses a string and returns a date based on the given format.
+</table>
+
+<p>They are called in the following fashion:</p>
+
+<pre><code>var date = new Date()
+DatePicker.formatDate(date, 'y-m-d');
+</code></pre>
 
 <h3>Creating the date-picker</h3>
 
@@ -123,6 +143,15 @@ here.</p>
       thus floating.
 </table>
 
+<p>It is used in this fashion:</p>
+
+<pre><code>var options =
+    { dateFormat: 'y-m-d'
+    , buttons: { next: '&amp;rarr;', prev: '&amp;larr;', close: 'X' }
+    }
+var dp = new DatePicker(options);
+</code></pre>
+
 <h3>Displaying</h3>
 
 <table class="ex-methods">
@@ -146,6 +175,10 @@ here.</p>
       with the contents. It will not be attached to anything by
       <code>render()</code>. Internally, this is done by <code>show()</code>.
 </table>
+
+<pre><code>&lt;input name=date&gt;
+&lt;button onclick="dp.toggle('input[name=date]');"&gt;Toggle&lt;/button&gt;
+</code></pre>
 
 <h3>Events</h3>
 
