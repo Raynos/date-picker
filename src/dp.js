@@ -41,7 +41,10 @@
 		this.options =
 			{ weekStart: 1 // 1 == monday
 			, weekdays: [ 'su', 'mo', 'tu', 'we', 'th', 'fr', 'sa' ]
-			, months: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
+			, months:
+			  [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'
+			  , 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+			  ]
 			, buttons: { next: 'Next', prev: 'Prev', close: '×' }
 			, date: new Date()
 			, dateFormat: 'y/m/d'
@@ -158,6 +161,7 @@
 	};
 	function render() {
 		var frag = document.createDocumentFragment()
+		  , input = this._elms.input
 		  , now = this._visibleDate || this.options.date
 		  , overlay = this._elms.floater && this.options.floatingOverlay
 		    ? createElement('div', { className: 'fzk-dp-overlay' })
@@ -165,6 +169,11 @@
 		  , showCloseButton = !!this._elms.floater
 		  , hide = this.hide.bind(this)
 
+		if(input && input.value) {
+			this._visibleDate = null;
+			this.options.date = now =
+				ctor.parseDate(input.value, this.options.dateFormat);
+		}
 		if(!this._visibleDate) {
 			this._visibleDate = new Date(now.getTime());
 		}

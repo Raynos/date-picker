@@ -16,10 +16,18 @@ describe('unit/render.spec.js', function() {
 
 	describe('When showing on an input', function() {
 		beforeEach(function() {
+			inputElm.value = '04 - 2 - 2012';
+			sinon.spy(ctor, 'parseDate');
 			dp.show(inputElm);
+		});
+		afterEach(function() {
+			ctor.parseDate.restore();
 		});
 		it('should attach to body', function() {
 			expect(document.body.appendChild).to.have.been.called;
+		});
+		it('should use the input-value', function() {
+			expect(ctor.parseDate).to.have.been.calledWith('04 - 2 - 2012');
 		});
 	});
 	describe('When clicking a cell', function() {
