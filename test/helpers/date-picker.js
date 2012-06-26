@@ -9,35 +9,24 @@ function fakeDOM() {
 	global.document =
 		{ createDocumentFragment: createDocumentFragment
 		, createElement: createElement
-		, querySelectorAll: createQuerySelectorAll()
-		, querySelector: createQuerySelector()
+		, querySelectorAll: function() { return [] }
+		, querySelector: function() { return null }
 		, body: createElement('body')
 		, documentElement: createElement('documentElement')
 		};
 };
 
-function createQuerySelectorAll() {
-	var func = sinon.stub();
-	func.returns([]);
-	return func;
-};
-function createQuerySelector() {
-	var func = sinon.stub();
-	func.returns(null);
-	return func;
-};
-
 function createElement(elementName) {
 	return (
-		{ appendChild: sinon.spy()
+		{ appendChild: function() {}
 		, tagName: elementName.toUpperCase()
 		, dataset: {}
-		, querySelector: createQuerySelector()
-		, querySelectorAll: createQuerySelectorAll()
-		, getBoundingClientRect: sinon.stub()
+		, querySelector: function() { return null }
+		, querySelectorAll: function() { return [] }
+		, getBoundingClientRect: function() {}
 		, ownerDocument: global.document
 		, style: {}
-		, parentNode: { removeChild: sinon.spy() }
+		, parentNode: { removeChild: function() {} }
 		}
 	);
 };
@@ -45,7 +34,7 @@ function createElement(elementName) {
 function createDocumentFragment() {
 	return this.fakeDocFrag ||
 		{ appendChild: function() {}
-		, querySelector: createQuerySelector()
-		, querySelectorAll: createQuerySelectorAll()
+		, querySelector: function() { return null }
+		, querySelectorAll: function() { return [] }
 		};
 };

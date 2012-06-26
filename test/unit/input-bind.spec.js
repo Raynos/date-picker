@@ -1,36 +1,48 @@
-describe('unit/render.spec.js', function() {
+describe('unit/input-bind.spec.js', function() {
 	var ctor = require('../helpers/date-picker')
 	  , dp
 	  , inputElm
 
+	  , fakeFragment
+	  , fakes = sinon.scope()
+
 	beforeEach(function() {
-		dp = ctor({ dateFormat: 'd - M - y' });
-		document.fakeDocFrag = document.createDocumentFragment();
-		document.fakeDocFrag.querySelector.returns(document.createElement('button'));
+		fakeFragment = document.createDocumentFragment();
+		fakeFragment.querySelector = sinon.stub();
+		fakeFragment.querySelector.returns(document.createElement('button'));
+
+		fakes.stub(document, 'createDocumentFragment').returns(fakeFragment);
+
 		inputElm = document.createElement('input');
-		inputElm.getBoundingClientRect.returns({ top: 0, left: 0 });
+		inputElm.getBoundingClientRect = sinon.stub().returns({ top: 0, left: 0 });
+
+		dp = ctor({ dateFormat: 'd - M - y' });
 	});
 	afterEach(function() {
-		document.fakeDocFrag = null;
+		fakes.restore();
 	});
 
 	describe('When showing on an input', function() {
 		var nextBtn
 		  , prevBtn
+		  , fakes = sinon.scope()
+
 		beforeEach(function() {
 			nextBtn = document.createElement('button');
-			document.fakeDocFrag.querySelector.withArgs('.fzk-dp-btn-nxt')
+			fakeFragment.querySelector.withArgs('.fzk-dp-btn-nxt')
 				.returns(nextBtn);
 			prevBtn = document.createElement('button');
-			document.fakeDocFrag.querySelector.withArgs('.fzk-dp-btn-prv')
+			fakeFragment.querySelector.withArgs('.fzk-dp-btn-prv')
 				.returns(prevBtn);
 
+			fakes.stub(document.body, 'appendChild');
+
 			inputElm.value = '04 - 2 - 2012';
-			sinon.spy(ctor, 'parseDate');
+			fakes.spy(ctor, 'parseDate');
 			dp.show(inputElm);
 		});
 		afterEach(function() {
-			ctor.parseDate.restore();
+			fakes.restore();
 		});
 		it('should attach to body', function() {
 			expect(document.body.appendChild).to.have.been.called;
@@ -58,7 +70,7 @@ describe('unit/render.spec.js', function() {
 
 		beforeEach(function() {
 			cells = document.createElement('div');
-			document.fakeDocFrag.querySelector.withArgs('.fzk-dp-cells').returns(cells);
+			fakeFragment.querySelector.withArgs('.fzk-dp-cells').returns(cells);
 
 			fakeEvent =
 				{ target: document.createElement('span')

@@ -16,11 +16,18 @@ describe('acceptance/dp.spec.js', function() {
 			Function.prototype.bind = null;
 			Object.keys = null;
 			Array.prototype.forEach = null;
+
+			var frag = document.createDocumentFragment();
+			sinon.stub(frag, 'querySelector');
+			sinon.stub(document, 'createDocumentFragment').returns(frag);
+			frag.querySelector.returns(document.createElement('button'));
 		});
 		afterEach(function() {
 			Function.prototype.bind = orgs.bind;
 			Object.keys = orgs.keys;
 			Array.prototype.forEach = orgs.forEach;
+
+			document.createDocumentFragment.restore();
 		});
 
 		/**
@@ -31,9 +38,6 @@ describe('acceptance/dp.spec.js', function() {
 		 * - IE < 9
 		 */
 		it('should not throw', function() {
-			document.fakeDocFrag = document.createDocumentFragment();
-			document.fakeDocFrag.querySelector.returns(document.createElement('button'));
-
 			new ctor({}).show(document.createElement('div'));
 		});
 	});

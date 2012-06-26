@@ -15,7 +15,7 @@ describe('unit/show.spec.js', function() {
 				var elm = document.createElement('div')
 
 				// We don't care about rendering. We will just make this a noop
-				dp.render = function() { return elm; };
+				dp.render = function() { return document.createElement('div'); };
 
 				showSpy = sinon.spy();
 				dp.on('show', showSpy);
@@ -36,6 +36,12 @@ describe('unit/show.spec.js', function() {
 		});
 
 		describe('with an invalid selector', function() {
+			beforeEach(function() {
+				sinon.stub(document, 'querySelector').returns(null);
+			});
+			afterEach(function() {
+				document.querySelector.restore();
+			});
 			it('should attempt to look it up', function() {
 				expect(function() {
 					dp.show('invalid');

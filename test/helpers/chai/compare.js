@@ -1,8 +1,11 @@
-
-module.exports = {
-	compare: compare,
-	addMethod: addMethod
-};
+if(typeof(module) == 'object' && module.exports) {
+	module.exports = {
+		compare: compare,
+		addMethod: addMethod
+	};
+} else {
+	addMethod(chai);
+}
 
 function addMethod(chai) {
 	chai.Assertion.addChainableMethod('approximate', function(expected) {

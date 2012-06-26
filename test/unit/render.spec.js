@@ -1,12 +1,18 @@
 describe('unit/render.spec.js', function() {
 	var ctor = require('../helpers/date-picker')
 	  , dp
+	  , fakeFragment
+	  , fakes = sinon.scope()
 
 	beforeEach(function() {
 		dp = ctor();
+
+		fakeFragment = document.createDocumentFragment();
+		fakeFragment.querySelector = sinon.stub();
+		fakes.stub(document, 'createDocumentFragment').returns(fakeFragment);
 	});
 	afterEach(function() {
-		document.fakeDocFrag = null;
+		fakes.restore();
 	});
 
 	describe('When adding event listeners', function() {
@@ -15,15 +21,13 @@ describe('unit/render.spec.js', function() {
 		  , cells
 
 		beforeEach(function() {
-			document.fakeDocFrag = document.createDocumentFragment();
-
 			next = {};
 			prev = {};
 			cells = {};
 
-			document.fakeDocFrag.querySelector.withArgs('.fzk-dp-btn-nxt').returns(next);
-			document.fakeDocFrag.querySelector.withArgs('.fzk-dp-btn-prv').returns(prev);
-			document.fakeDocFrag.querySelector.withArgs('.fzk-dp-cells').returns(cells);
+			fakeFragment.querySelector.withArgs('.fzk-dp-btn-nxt').returns(next);
+			fakeFragment.querySelector.withArgs('.fzk-dp-btn-prv').returns(prev);
+			fakeFragment.querySelector.withArgs('.fzk-dp-cells').returns(cells);
 
 			dp.render();
 		});
@@ -77,19 +81,18 @@ describe('unit/render.spec.js', function() {
 
 	describe('When calling rerender()', function() {
 		var container
-		  , frag
+
 		beforeEach(function() {
-			frag = document.createDocumentFragment();
-			document.fakeDocFrag = frag;
-			document.fakeDocFrag.querySelector.returns({});
+			fakeFragment.querySelector.returns({});
 
 			container = document.createElement('div');
+			container.appendChild = sinon.spy();
 
 			dp.container = container;
 			dp.rerender();
 		});
 		it('should add the fragment from render() to "this.container"', function() {
-			expect(container.appendChild).to.have.been.calledWith(frag);
+			expect(container.appendChild).to.have.been.calledWith(fakeFragment);
 		});
 	});
 });
