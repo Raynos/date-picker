@@ -1,0 +1,34 @@
+<!doctype html>
+<title>date-picker browser testing suite</title>
+<meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+
+<link rel=stylesheet href=../node_modules/mocha/mocha.css>
+<script src=../node_modules/mocha/mocha.js></script>
+<script src=../node_modules/sinon/lib/sinon.js></script>
+<script src=../node_modules/chai/chai.js></script>
+<script src=../node_modules/sinon-chai/lib/sinon-chai.js></script>
+<script>
+mocha.setup('bdd')
+var expect = chai.expect
+</script>
+<div id=mocha></div>
+
+<script>
+function require(path) {
+	if(path.match(/helpers\/date-picker/)) {
+		return DatePicker;
+	}
+
+	throw new Error('Uncaught require: ' + path);
+}
+</script>
+<script src=../src/dp.js></script>
+
+<!-- Include test scripts here -->
+{{{scripts}}}
+
+<script>
+!function (){
+	var runner = mocha.run();
+}();
+</script>
