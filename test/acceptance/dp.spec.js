@@ -31,7 +31,10 @@ describe('acceptance/dp.spec.js', function() {
 		 * - IE < 9
 		 */
 		it('should not throw', function() {
-			new ctor({});
+			document.fakeDocFrag = document.createDocumentFragment();
+			document.fakeDocFrag.querySelector.returns(document.createElement('button'));
+
+			new ctor({}).show(document.createElement('div'));
 		});
 	});
 });

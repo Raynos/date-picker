@@ -47,7 +47,7 @@
 			  [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'
 			  , 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 			  ]
-			, buttons: { next: 'Next', prev: 'Prev', close: '×' }
+			, buttons: { next: 'Next', prev: 'Prev', close: 'x' }
 			, date: new Date()
 			, dateFormat: 'y/m/d'
 			, floatingOverlay: false
@@ -57,7 +57,7 @@
 		this._elms = {};
 
 		if(options) {
-			_(options).keys().forEach(function(key) {
+			_(options).keys().each(function(key) {
 				this.options[key] = options[key];
 			}, this);
 		}
@@ -92,7 +92,7 @@
 		  , args = Array.prototype.slice.call(arguments, 1)
 
 		if(listeners) {
-			listeners.forEach(function(cb) {
+			_(listeners).each(function(cb) {
 				cb.apply(null, args);
 			});
 		}
@@ -162,7 +162,7 @@
 		    ? createElement('div', { className: 'fzk-dp-overlay' })
 		    : null
 		  , showCloseButton = !!this._elms.floater
-		  , hide = this.hide.bind(this)
+		  , hide = _(this.hide).bind(this)
 
 		if(!this._visibleDate) {
 			this._visibleDate = new Date(now.getTime());
@@ -221,7 +221,7 @@
 	};
 	function renderHeaderLabels() {
 		var div = createElement('div', { className: 'fzk-dp-lbls' })
-		getWeekdays(this.options).forEach(function(weekday) {
+		_(getWeekdays(this.options)).each(function(weekday) {
 			div.appendChild(createElement('label',
 				{ className: 'fzk-dp-cell'
 				, innerHTML: weekday
@@ -251,9 +251,9 @@
 		    + padDate(now.getMonth() +1) + '/'
 		    + padDate(now.getDate())
 
-		getOverflowPrev(date, this.options).forEach(addToDiv('fzk-dp-cell-prv'));
-		getCurrentMonth(date).forEach(addToDiv(''));
-		getOverflowNext(date, this.options).forEach(addToDiv('fzk-dp-cell-nxt'));
+		_(getOverflowPrev(date, this.options)).each(addToDiv('fzk-dp-cell-prv'));
+		_(getCurrentMonth(date)).each(addToDiv(''));
+		_(getOverflowNext(date, this.options)).each(addToDiv('fzk-dp-cell-nxt'));
 
 		return div;
 
@@ -551,12 +551,12 @@
 	function createElement(tag, opts, data) {
 		var elm = document.createElement(tag);
 		if(opts) {
-			Object.keys(opts).forEach(function(key) {
+			_(opts).keys().each(function(key) {
 				elm[key] = opts[key];
 			});
 		}
 		if(data) {
-			Object.keys(data).forEach(function(key) {
+			_(data).keys().each(function(key) {
 				elm.dataset[key] = data[key];
 			});
 		}
@@ -580,7 +580,7 @@
 			{ bind: bind
 			, bindAll: bindAll
 			, keys: keys
-			, forEach: forEach
+			, each: forEach
 			}
 		);
 
@@ -605,13 +605,15 @@
 
 		function bindAll(methods) {
 			methods = Array.prototype.slice.call(arguments)
-			_(methods).forEach(function(func) {
+			_(methods).each(function(func) {
 				obj[func] = _(obj[func]).bind(obj);
 			});
 		};
 
 		function forEach(func, ctx) {
-			for(var i = 0; i < obj.length; i++) {
+			var i = 0
+			  , l = obj.length
+			for(; i < l; i++) {
 				func.call(ctx, obj[i], i, obj);
 			}
 		};
