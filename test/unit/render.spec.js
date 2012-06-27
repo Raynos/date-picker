@@ -83,12 +83,18 @@ describe('unit/render.spec.js', function() {
 		var container
 
 		beforeEach(function() {
-			fakeFragment.querySelector.returns({});
+			// For some reason, the normal fakeFragment fails on iOS 5.
+			// This workaround makes the test pass.
+			fakeFragment =
+				{ querySelector: function() { return {} }
+				, appendChild:function() {}
+				};
+			document.createDocumentFragment.returns(fakeFragment)
 
 			container = document.createElement('div');
 			container.appendChild = sinon.spy();
-
 			dp.container = container;
+
 			dp.rerender();
 		});
 		it('should add the fragment from render() to "this.container"', function() {
