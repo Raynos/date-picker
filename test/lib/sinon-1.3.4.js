@@ -34,6 +34,8 @@
 
 "use strict";
 var sinon = (function () {
+// This is there to run in the browser. We will evacuate in case of node!
+if(typeof(module) === 'object' && module.exports) return;
 var buster = (function (buster, setTimeout) {
     function extend(target) {
         if (!target) {
