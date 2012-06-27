@@ -15,6 +15,43 @@ describe('unit/render.spec.js', function() {
 		fakes.restore();
 	});
 
+	describe('When calling "render()"', function() {
+		var fakeCell
+		  , fakes
+
+		beforeEach(function() {
+			fakes = sinon.scope()
+
+			fakeCell = document.createElement('span');
+			fakes.spy(fakeCell, 'setAttribute');
+			/**
+			 * We need to stub this to not break the DOM
+			 * (it throws exception when append an element to itself,
+			 *  and this is the only element returned by the stub)
+			 */
+			fakes.stub(fakeCell, 'appendChild');
+
+			fakes.stub(document, 'createElement').returns(fakeCell);
+
+			fakeFragment.querySelector.returns({});
+
+			/**
+			 * This date is within february.
+			 * It should build and append the entire month
+			 */
+			dp = ctor({ date: new Date('2012-02-12T12:00:00Z') });
+			dp.render();
+		});
+		afterEach(function() {
+			fakes.restore();
+		});
+		it('should set the expected date as data-values on the cells', function() {
+			// The expected date is an arbitrary date in february
+			expect(fakeCell.setAttribute)
+				.to.have.been.calledWith('data-date', '2012/02/04');
+		});
+	});
+
 	describe('When adding event listeners', function() {
 		var next
 		  , prev
@@ -51,6 +88,7 @@ describe('unit/render.spec.js', function() {
 			fakeEvent =
 				{ target: document.createElement('span')
 				};
+			fakeEvent.target.getAttribute = sinon.stub();
 			cells = {};
 
 			document.fakeDocFrag = document.createDocumentFragment();
@@ -58,16 +96,27 @@ describe('unit/render.spec.js', function() {
 			document.fakeDocFrag.querySelector.withArgs('.fzk-dp-cells').returns(cells);
 
 			dp.render();
-		});
-		it('should call "change" listener when clicking on cell', function() {
-			var changeSpy = sinon.spy()
 
-			fakeEvent.target.dataset.date = '2012/06/02';
+			// We don't care about arbitrary dates
+			sinon.stub(ctor, 'parseDate').returns(new Date());
+		});
+		afterEach(function() {
+			ctor.parseDate.restore();
+		});
+		it('should call "change" listener with the date when clicking on cell', function() {
+			var changeSpy = sinon.spy()
+			  , fakeDate = new Date()
+
+			// Only this specific date is interesting
+			ctor.parseDate.withArgs('2012/06/02').returns(fakeDate)
+
+			fakeEvent.target.getAttribute
+				.withArgs('data-date').returns('2012/06/02');
 
 			dp.on('change', changeSpy);
 			cells.onclick(fakeEvent);
 
-			expect(changeSpy).to.have.been.called;
+			expect(changeSpy).to.have.been.calledWith(fakeDate);
 		});
 		it('should not emit "show" event', function() {
 			var showSpy = sinon.spy()

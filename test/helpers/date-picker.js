@@ -20,11 +20,13 @@ function createElement(elementName) {
 	return (
 		{ appendChild: function() {}
 		, tagName: elementName.toUpperCase()
-		, dataset: {}
 		, querySelector: function() { return null }
 		, querySelectorAll: function() { return [] }
 		, getBoundingClientRect: function() {}
 		, ownerDocument: global.document
+		, _dataset: {}
+		, setAttribute: function(key, value) { this._dataset[key]=value }
+		, getAttribute: function(key) { return this._dataset[key] }
 		, style: {}
 		, parentNode: { removeChild: function() {} }
 		}

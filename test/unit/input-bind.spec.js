@@ -14,7 +14,8 @@ describe('unit/input-bind.spec.js', function() {
 		fakes.stub(document, 'createDocumentFragment').returns(fakeFragment);
 
 		inputElm = document.createElement('input');
-		inputElm.getBoundingClientRect = sinon.stub().returns({ top: 0, left: 0 });
+		inputElm.getBoundingClientRect = sinon.stub();
+		inputElm.getBoundingClientRect.returns({ top: 0, left: 0 });
 
 		dp = ctor({ dateFormat: 'd - M - y' });
 	});
@@ -75,7 +76,8 @@ describe('unit/input-bind.spec.js', function() {
 			fakeEvent =
 				{ target: document.createElement('span')
 				};
-			fakeEvent.target.dataset.date = '2012/04/05';
+			fakeEvent.target.getAttribute = sinon.stub();
+			fakeEvent.target.getAttribute.withArgs('data-date').returns('2012/04/05');
 
 			dp.show(inputElm);
 		});

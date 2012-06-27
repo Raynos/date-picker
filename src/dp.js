@@ -102,7 +102,7 @@
 
 	function dateCellClicked(event) {
 		var elm = event.target
-		  , date = elm.dataset.date
+		  , date = elm.getAttribute('data-date')
 		  , dateFormat = this.options.dateFormat
 
 		if(!date) {
@@ -557,7 +557,7 @@
 		}
 		if(data) {
 			_(data).keys().each(function(key) {
-				elm.dataset[key] = data[key];
+				elm.setAttribute('data-' + key, data[key]);
 			});
 		}
 		return elm;
