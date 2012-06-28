@@ -4,13 +4,13 @@
 <title>Manual Floating window test</title>
 
 <style>
-section {
+div {
 	border: 1px solid black;
 	width: 230px;
 	padding: 5px;
 	margin: 10px;
 }
-section p {
+div p {
 	width: 210px;
 	margin: 10px 0;
 	padding: 5px;
@@ -33,31 +33,31 @@ section p {
 }
 </style>
 
-<section class="static">
+<div class="static">
 	<h2>position: static</h2>
 	<input>
-	<button onclick="dp.toggle(this.previousElementSibling)">Toggle</button>
+	<button onclick="dp.toggle(this.previousElementSibling || this.previousSibling)">Toggle</button>
 	<p>It should appear inside here</p>
-</section>
+</div>
 
-<section class="rel">
+<div class="rel">
 	<h2>position: relative</h2>
 	<input>
-	<button onclick="dp.toggle(this.previousElementSibling)">Toggle</button>
+	<button onclick="dp.toggle(this.previousElementSibling || this.previousSibling)">Toggle</button>
 	<p>It should appear inside here</p>
-</section>
+</div>
 
-<section class="abs">
+<div class="abs">
 	<h2>position: absolute</h2>
 	<input>
-	<button onclick="dp.toggle(this.previousElementSibling)">Toggle</button>
+	<button onclick="dp.toggle(this.previousElementSibling || this.previousSibling)">Toggle</button>
 	<p>It should appear inside here</p>
-</section>
+</div>
 
 <h3>Scroll and test again!</h3>
 
-<section id=below-the-fold>
-</section>
+<div id=below-the-fold>
+</div>
 
 <script src=../../src/dp.js></script>
 <script>
