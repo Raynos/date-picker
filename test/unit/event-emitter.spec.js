@@ -15,7 +15,7 @@ describe('unit/event-emitter.spec.js', function() {
 			it('should not throw', function() {
 				expect(function() {
 					dp.emit('event');
-				}).not.to.throw();
+				}).not.to['throw']();
 			});
 		});
 		describe('with listener', function() {
@@ -52,7 +52,7 @@ describe('unit/event-emitter.spec.js', function() {
 		it('should not throw', function() {
 			expect(function() {
 				dp.on('event', spy);
-			}).not.to.throw();
+			}).not.to['throw']();
 		});
 		it('should return the date-picker for chaining', function() {
 			expect(dp.on('event', spy))
@@ -61,7 +61,7 @@ describe('unit/event-emitter.spec.js', function() {
 		it('should throw if not passed a callback', function() {
 			expect(function() {
 				dp.on('event');
-			}).to.throw();
+			}).to['throw']();
 		});
 	});
 
@@ -73,7 +73,7 @@ describe('unit/event-emitter.spec.js', function() {
 		it('should not throw', function() {
 			expect(function() {
 				dp.off('event', spy);
-			}).not.to.throw();
+			}).not.to['throw']();
 		});
 		it('should remove an added listener', function() {
 			dp

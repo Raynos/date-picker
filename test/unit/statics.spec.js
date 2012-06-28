@@ -5,7 +5,7 @@ describe('unit/statics.spec.js', function() {
 	describe('When calling formatDate(date, format)', function() {
 		var date
 		beforeEach(function() {
-			date = new Date('2012-04-05T12:00:00Z');
+			date = new Date(2012, 3, 5);
 		});
 		it('should return a string', function() {
 			var result = ctor.formatDate(date, 'y/m/d')
@@ -52,7 +52,7 @@ describe('unit/statics.spec.js', function() {
 		var result
 		  , opts
 		beforeEach(function() {
-			var date = new Date('2012-01-11T12:00:00Z')
+			var date = new Date(2012, 0, 11)
 			result = ctor.getCurrentMonth(date, opts);
 		});
 		it('should return all days in the month', function() {
@@ -86,7 +86,7 @@ describe('unit/statics.spec.js', function() {
 		});
 		describe('and the last day is a thursday', function() {
 			beforeEach(function() {
-				var now = new Date('2012-05-01T12:00:00Z')
+				var now = new Date(2012, 4, 1)
 				result = ctor.getOverflowNext(now, opts)
 			});
 			it('should return three days', function() {
@@ -115,7 +115,7 @@ describe('unit/statics.spec.js', function() {
 		});
 		describe('and the last day is a saturday', function() {
 			beforeEach(function() {
-				var now = new Date('2012-03-01T12:00:00Z')
+				var now = new Date(2012, 2, 1)
 				result = ctor.getOverflowNext(now, opts)
 			});
 			it('should return three days', function() {
@@ -138,7 +138,7 @@ describe('unit/statics.spec.js', function() {
 		});
 		describe('and the last day is a wednesday', function() {
 			beforeEach(function() {
-				var now = new Date('2012-02-01T12:00:00Z')
+				var now = new Date(2012, 1, 1)
 				result = ctor.getOverflowNext(now, opts)
 			});
 			it('should return six days', function() {
@@ -170,7 +170,7 @@ describe('unit/statics.spec.js', function() {
 		});
 		describe('and the last day is a tuesday', function() {
 			beforeEach(function() {
-				var now = new Date('2012-01-01T12:00:00Z')
+				var now = new Date(2012, 0, 1)
 				result = ctor.getOverflowNext(now, opts)
 			});
 			it('should return an empty array', function() {
@@ -190,7 +190,7 @@ describe('unit/statics.spec.js', function() {
 
 		describe('and the first is a sunday', function() {
 			beforeEach(function() {
-				var now = new Date('2012-01-01T12:00:00Z')
+				var now = new Date(2012, 0, 1)
 				result = ctor.getOverflowPrev(now, opts)
 			});
 			it('should return six days', function() {
@@ -223,7 +223,7 @@ describe('unit/statics.spec.js', function() {
 
 		describe('and the first is a wednesday', function() {
 			beforeEach(function() {
-				var now = new Date('2012-02-01T12:00:00Z')
+				var now = new Date(2012, 1, 1)
 				result = ctor.getOverflowPrev(now, opts)
 			});
 			it('should return two days', function() {
@@ -244,7 +244,7 @@ describe('unit/statics.spec.js', function() {
 
 		describe('and the first is the first of the week', function() {
 			beforeEach(function() {
-				var now = new Date('2012-10-01T12:00:00Z')
+				var now = new Date(2012, 9, 1)
 				result = ctor.getOverflowPrev(now, opts)
 			});
 			it('should return an empty array', function() {

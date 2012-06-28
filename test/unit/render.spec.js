@@ -39,7 +39,7 @@ describe('unit/render.spec.js', function() {
 			 * This date is within february.
 			 * It should build and append the entire month
 			 */
-			dp = ctor({ date: new Date('2012-02-12T12:00:00Z') });
+			dp = ctor({ date: new Date(2012, 1, 12) });
 			dp.render();
 		});
 		afterEach(function() {

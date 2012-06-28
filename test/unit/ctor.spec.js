@@ -15,7 +15,7 @@ describe('unit/ctor.spec.js', function() {
 			  , date
 			beforeEach(function() {
 				var opts =
-					{ date: date = new Date('2012-01-02T12:00:00')
+					{ date: date = new Date(2012, 0, 2)
 					, unknown: 'option'
 					};
 				dp = ctor(opts);

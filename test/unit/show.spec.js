@@ -45,14 +45,14 @@ describe('unit/show.spec.js', function() {
 			it('should attempt to look it up', function() {
 				expect(function() {
 					dp.show('invalid');
-				}).to.throw();
+				}).to['throw']();
 
 				expect(document.querySelector).to.have.been.calledWith('invalid');
 			});
 			it('should throw an exception', function() {
 				expect(function() {
 					dp.show('invalid');
-				}).to.throw('"invalid" does not resolve to an element!');
+				}).to['throw']('"invalid" does not resolve to an element!');
 			});
 		});
 	});
