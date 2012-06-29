@@ -91,9 +91,8 @@ describe('unit/render.spec.js', function() {
 			fakeEvent.target.getAttribute = sinon.stub();
 			cells = {};
 
-			document.fakeDocFrag = document.createDocumentFragment();
-			document.fakeDocFrag.querySelector.returns({});
-			document.fakeDocFrag.querySelector.withArgs('.fzk-dp-cells').returns(cells);
+			fakeFragment.querySelector.returns({});
+			fakeFragment.querySelector.withArgs('.fzk-dp-cells').returns(cells);
 
 			dp.render();
 
@@ -108,10 +107,10 @@ describe('unit/render.spec.js', function() {
 			  , fakeDate = new Date()
 
 			// Only this specific date is interesting
-			ctor.parseDate.withArgs('2012/06/02').returns(fakeDate)
+			ctor.parseDate.withArgs('date').returns(fakeDate)
 
 			fakeEvent.target.getAttribute
-				.withArgs('data-date').returns('2012/06/02');
+				.withArgs('data-date').returns('date');
 
 			dp.on('change', changeSpy);
 			cells.onclick(fakeEvent);

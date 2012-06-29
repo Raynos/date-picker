@@ -17,6 +17,7 @@
 		, trigger: emit
 
 		, resolveSelector: resolveSelector
+		, getOffset: getOffset
 		, rerender: rerender
 		, renderControls: renderControls
 		, renderHeaderLabels: renderHeaderLabels
@@ -100,8 +101,8 @@
 		return this;
 	};
 
-	function dateCellClicked(event) {
-		var elm = event.target
+	function dateCellClicked(e) {
+		var elm = e ? e.target : event.srcElement
 		  , date = elm.getAttribute('data-date')
 		  , dateFormat = this.options.dateFormat
 
@@ -464,7 +465,7 @@
 	 * https://github.com/jquery/jquery/blob/7c23b77af2477417205/src/offset.js
 	 */
 	function getOffset(elm) {
-		var box = elm.getBoundingClientRect()
+		var box = _(elm.getBoundingClientRect()).clone()
 		  , doc = elm.ownerDocument
 		  , body = doc.body
 		  , docElm = doc.documentElement
@@ -478,6 +479,10 @@
 		    , left: docElm.clientLeft || body.clientLeft || 0
 		    }
 
+		if(box.height === undefined) {
+			box.height = ie8.height(elm);
+		}
+
 		return (
 			{ top: box.top + scroll.top - client.top
 			, left: box.left + scroll.left - client.left
@@ -485,6 +490,23 @@
 			, height: box.height
 			}
 		);
+	};
+
+	var ie8 = {};
+	ie8.height = function(elm) {
+		var curStyle = elm.currentStyle
+		  , suffixes = [ 'Top', 'Bottom' ]
+		  , prefixes = [ 'border', 'padding' ]
+		  , height = elm.offsetHeight
+		  , i
+		  , j
+
+		for(i = 0; i < 2; i++) {
+			for(j = 0; j < 2; j++) {
+				height -= parseFloat(curStyle[prefixes[i] + suffixes[j]]) || 0;
+			}
+		}
+		return height;
 	};
 
 	/**
@@ -581,8 +603,18 @@
 			, bindAll: bindAll
 			, keys: keys
 			, each: forEach
+			, clone: clone
 			}
 		);
+
+		function clone() {
+			var cp = {}
+			  , key
+			for(key in obj) {
+				cp[key] = obj[key];
+			}
+			return cp;
+		};
 
 		// keys() assumes obj to be any object
 		function keys() {

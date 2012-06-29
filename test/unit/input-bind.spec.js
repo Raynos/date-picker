@@ -15,7 +15,8 @@ describe('unit/input-bind.spec.js', function() {
 
 		inputElm = document.createElement('input');
 		inputElm.getBoundingClientRect = sinon.stub();
-		inputElm.getBoundingClientRect.returns({ top: 0, left: 0 });
+		// These are the values we care about. More are returned by real browsers!
+		inputElm.getBoundingClientRect.returns({ top: 0, left: 0, height: 0 });
 
 		dp = ctor({ dateFormat: 'd - M - y' });
 	});
