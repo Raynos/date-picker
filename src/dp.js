@@ -43,6 +43,7 @@
 
 		this.options =
 			{ weekStart: 1 // 1 == monday
+			, elm: null
 			, weekdays: [ 'su', 'mo', 'tu', 'we', 'th', 'fr', 'sa' ]
 			, months:
 			  [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'
