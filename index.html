@@ -32,12 +32,90 @@
 <li><s>0.2</s>: Can emit events.</li>
 <li><s>0.3</s>: Popup and binding to input element.</li>
 <li><s>0.4</s>: More options and customizability.</li>
-<li>0.5: Better cross-browser support.</li>
+<li><s>0.5</s>: Better cross-browser support.</li>
 <li>0.6: Full support for iOS devices.</li>
 <li>0.7: Ender support.</li>
 <li>0.8: CSS templates and examples.</li>
 <li>1.0: All done and ready for prod-use.</li>
 </ul>
+
+<h2>Installing</h2>
+
+<p>There are currently three ways to install this:</p>
+
+<ol>
+<li>If you want a somewhat stable build, use <code>npm install date-picker</code>.</li>
+<li>If you want the bleeding edge, pull from <a href="https://github.com/fizker/date-picker">github</a>,
+<code>cd</code> into the checked-out dir, and run <code>npm install</code>.</li>
+<li>If you just want to load it and test it quickly, a minified version is bundled
+with the <a href="http://fizker.github.com/date-picker">GitHub Pages</a> describing this
+project. It can be fetched from <a href="http://fizker.github.com/date-picker/lib/dp.min.js">http://fizker.github.com/date-picker/lib/dp.min.js</a></li>
+</ol>
+
+<h2>Running the tests</h2>
+
+<p>To run the tests, you need to do installation step 1 or 2. If 1 is chosen, there
+is an additional step. <code>devDependencies</code> are not normally installed through
+<a href="http://npmjs.org">npm</a>, so you need to install them manually:</p>
+
+<pre><code>cd node_modules/date-picker
+npm install
+</code></pre>
+
+<p>Then both steps align, and simply running <code>npm test</code> will execute the tests in
+node.</p>
+
+<p>To run the tests in a browser, you need at least v. 0.5 (in npm) or commit
+ade06aa357 (git). The install script after those versions build an html-file
+and places it in <code>test/browser.html</code> (based on the package folder).</p>
+
+<p>Simply load this up in a browser. A web-server is not required to run it locally.</p>
+
+<h2>Example code</h2>
+
+<p>To get it up after installing, simple link to the <code>dp.min.js</code> and <code>dp.min.css</code>.
+To overwrite the look, either inspect the living DOM or build upon the CSS file.</p>
+
+<p>After inclusion, it can simply be created with the following snippet:</p>
+
+<pre><code>var options = null // options are optional
+  , dp = new DatePicker(options)
+  // any of the following two give the same result
+  , element = $('.input')[0]
+  , element = '.input'
+
+dp.show(element);
+</code></pre>
+
+<p>The contents of the buttons and labels can be altered via options when creating
+the date-picker. For a full list of the supported options, check the <a href="docs.html">docs</a>.</p>
+
+<h2>Browser compatibility</h2>
+
+<p>As of this writing, all tests are green in the following browsers (or newer):</p>
+
+<ul>
+<li>Safari 5.1.7 (win)</li>
+<li>Safari for iOS 4.3</li>
+<li>Android browser for Android 2.3.7 (HTC Desire)</li>
+<li>Chrome 20 (mac)</li>
+<li>Firefox 12 (mac)</li>
+<li>Opera 11.64 (mac)</li>
+<li>Internet Explorer 9</li>
+</ul>
+
+<p>The tests are known to fail in IE8, but that is due to <a href="http://http://chaijs.com">chai</a>
+crashing on inclusion in those browsers. A superficial manual test suggests that
+the code is working. There is a plan to work on the tests and get them up and
+running in at least IE8.</p>
+
+<p>There is no plan to ever support IE7 or below. Any code that adds <strong>too</strong> much
+junk to support 7+ year old browsers have a good chance of being rejected. At
+some point, the world simply have to move on! But if the fix is small and lean,
+feel free to submit a pull request!</p>
+
+<p>There are no expected outages in older versions of the other compatible browsers.
+But still, too big changes to support legacy browsers are not really interesting.</p>
 
 <h2>Special thanks</h2>
 

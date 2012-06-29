@@ -154,6 +154,7 @@ It is used in this fashion:
 	  <code>render()</code>. Internally, this is done by <code>show()</code>.
 </table>
 
+The `#toggle()` method can be used in the following fashion:
 
 	<input name=date>
 	<button onclick="dp.toggle('input[name=date]');">Toggle</button>

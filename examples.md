@@ -10,7 +10,8 @@ Static date-pickers
 To show a static, always-present, date picker, simply create it and point it at
 a container element.
 
-Please note that we can easily register to get the selected date.
+Please note that we can easily subscribe to notifications regarding when the
+user selects the date.
 
 	Date-picker goes here:
 	<div id=container></div>
@@ -53,6 +54,8 @@ by registering `onblur` and `onfocus` on the input.
 	<script>
 	var dp = new DatePicker({ dateFormat: 'd-m-y' })
 	</script>
+
+Again, the results:
 
 <div class="example">
 	Date-picker goes here:
