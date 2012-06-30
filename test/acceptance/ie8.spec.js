@@ -1,9 +1,16 @@
 /**
- * elements don't return width/height in getBoundingClientRect().
- *   -> use some weird css-style sniffing and calculation
+ * This test is only interesting in node, and is emulating
+ * some IE8 specific issues.
+ *
+ * In browsers, we want to test the actual browser, and not
+ * the quirks of other browsers.
  */
 
 describe('acceptance/ie8.spec.js', function() {
+	// Return if not running in node.js.
+	if(typeof(module) !== 'object' || !module.exports) {
+		return;
+	}
 	var ctor = require('../helpers/date-picker')
 	  , dp
 	  , fakeFragment
