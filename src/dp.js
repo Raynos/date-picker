@@ -159,6 +159,7 @@
 	};
 	function render() {
 		var frag = document.createDocumentFragment()
+		  , container = createElement('div', { className: 'fzk-dp-wdgt' })
 		  , now = this._visibleDate || this.options.date
 		  , overlay = this._elms.floater && this.options.floatingOverlay
 		    ? createElement('div', { className: 'fzk-dp-overlay' })
@@ -173,9 +174,12 @@
 		if(overlay) {
 			frag.appendChild(overlay);
 		}
-		frag.appendChild(this.renderControls(showCloseButton));
-		frag.appendChild(this.renderHeaderLabels());
-		frag.appendChild(this.renderDateCells());
+
+		frag.appendChild(container);
+
+		container.appendChild(this.renderControls(showCloseButton));
+		container.appendChild(this.renderHeaderLabels());
+		container.appendChild(this.renderDateCells());
 
 		// Closing the overlay
 		if(overlay) {

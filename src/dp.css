@@ -1,12 +1,16 @@
 /* outer container */
-.fzk-dp {
+.fzk-dp-wdgt {
 	width: 210px;
+	background: white;
+	position: relative;
 }
+.fzk-dp-float .fzk-dp-wdgt {
+	padding: 5px;
+}
+
 .fzk-dp-float {
 	margin: 10px 0;
-	padding: 5px;
 	position: absolute;
-	background: white;
 	z-index: 10;
 	box-shadow: 0 0 10px black;
 }
@@ -16,7 +20,7 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: transparent;
+	background: rgba(0,0,0,.2);
 }
 
 /* navigation controls */
