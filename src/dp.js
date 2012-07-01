@@ -409,6 +409,10 @@
 		return this.emit('show', this);
 	};
 	function hide() {
+		if(!this.showing) {
+			return this;
+		}
+
 		this.container.innerHTML = '';
 		this._removeFloater();
 		this.showing = false;
