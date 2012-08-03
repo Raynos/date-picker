@@ -1,0 +1,95 @@
+/* outer container */
+.fzk-dp {
+	width: 260px;
+	border: 1px solid #0274cc;
+	padding: 1px;
+	border-radius: 3px;
+	box-shadow: rgba(0,0,0,.3) 0 0 6px;
+	background: white;
+}
+.fzk-dp-float {
+	margin: 10px 0;
+	padding: 5px;
+	position: absolute;
+	background: white;
+	z-index: 10;
+	box-shadow: 0 0 10px black;
+}
+.fzk-dp-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: transparent;
+}
+
+/* navigation controls */
+.fzk-dp-ctrls {
+	position: relative;
+	background: #689ec5;
+	border: 1px solid #689ec5;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+.fzk-dp-month {
+	color: white;
+	text-shadow: rgba(0,0,0,.3) 1px 1px;
+}
+.fzk-dp-btn-prv {}
+.fzk-dp-btn-nxt {}
+.fzk-dp-btn-cls {}
+
+/* header labels */
+.fzk-dp-lbls {
+	border-bottom: 1px solid black;
+	margin-bottom: 2px;
+	position: relative;
+}
+.fzk-dp-lbls .fzk-dp-cell {
+	font-weight: bold;
+	cursor: default;
+	text-transform: uppercase;
+	font-size: 9px;
+	text-shadow: white 1px 1px;
+	color: #525F71;
+}
+
+/* cells */
+.fzk-dp-cells {
+	position: relative;
+}
+
+.fzk-dp-cell {
+	color: black;
+	cursor: pointer;
+	display: inline-block;
+	width: 33px;
+	padding: 1px;
+	text-align: center;
+	border-left: 1px solid #bbcddb;
+	border-top: 1px solid #bbcddb;
+	border-right: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+}
+.fzk-dp-cell:nth-child(7n+1) {
+	border-left-color: transparent;
+}
+
+.fzk-dp-cells .fzk-dp-cell:hover {
+	background: #eee;
+}
+
+.fzk-dp-cell-current {
+	border: 1px solid green;
+}
+.fzk-dp-cell-today {
+	background: green;
+}
+
+  .fzk-dp-cell-nxt
+, .fzk-dp-cell-prv
+{
+	color: #888;
+}
+.fzk-dp-cell-nxt {}
