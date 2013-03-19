@@ -112,6 +112,10 @@ function dateCellClicked(e) {
         return;
     }
 
+    if (this.options.disabled) {
+        return
+    }
+
     date = date.split('/');
 
     this.options.date.setFullYear(date[0]);
